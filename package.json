@@ -4,7 +4,8 @@
   "description": "Chatbot created with Dialogflow and Messenger API",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon index.js"
+    "test": "nodemon index.js",
+    "start": "node index.js"
   },
   "author": "Luis Gerardo Diaz Reynoso",
   "license": "ISC",
