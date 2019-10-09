@@ -22,8 +22,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", function (req, res) {
   res.send("Hello world, I am a chat bot");
 });
-app.get("/webhook/", webhook.getMessage);
-app.post("/webhook/", webhook.postMessage);
+app.get("/webhook", webhook.getMessage);
+app.post("/webhook", webhook.postMessage);
 
 // Spin up the server
 app.listen(app.get("port"), function () {
