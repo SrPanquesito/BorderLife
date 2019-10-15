@@ -49,7 +49,40 @@ exports.receivedMessage = (event) => {
     //     handleMessageAttachments(messageAttachments, senderID);
     // }
   }
+
+  exports.receivedPostback = (event) => {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfMessage = event.timestamp;
+    var message = event.postback;
   
+    if (!sessionIds.has(senderID)) {
+      sessionIds.set(senderID, uuid.v1());
+    }
+  
+    var messageId = message.mid;
+    var appId = message.app_id;
+    var metadata = message.metadata;
+  
+    // You may get a text or attachment but not both
+    var messageText = message.title;
+    var messageAttachments = message.attachments;
+
+
+    if (message.hasOwnProperty('payload')) {
+        var payload = message.payload;
+    } else {
+      var payload = "";
+    }
+  
+    if (messageText) {
+      //send message to api.ai
+      sendToApiAi(senderID, messageText, payload);
+    } 
+    // else if (messageAttachments) {
+    //     handleMessageAttachments(messageAttachments, senderID);
+    // }
+  }
 
 sendToApiAi = (sender, text, payload) => {
     sendTypingOn(sender);
@@ -183,7 +216,6 @@ exports.callSendAPI = async (messageData) => {
   }
   
   
-  
 exports.sendTextMessage = async (recipientId, text) => {
     var messageData = {
       recipient: {
@@ -195,3 +227,76 @@ exports.sendTextMessage = async (recipientId, text) => {
     };
     await this.callSendAPI(messageData);
   };
+
+
+
+
+
+  exports.sendImgAPI = async (messageData) => {
+  
+    const url = "https://graph.facebook.com/v4.0/me/message_attachments?access_token=" + FB_PAGE_TOKEN;
+      await axios.post(url, messageData)
+        .then(function (response) {
+          if (response.hasOwnProperty('data')) {
+            console.log(response.data);
+          }
+        })
+        .catch(function (error) {
+          console.log(error.response.headers);
+        });
+    };
+
+
+exports.uploadImage = async (recipientId, url) => {
+  var messageData = {
+    message: {
+      attachment: {
+        type: "image",
+        payload: {
+          is_reusable: true,
+          url: "https://img.icons8.com/plasticine/2x/car.png"
+        }
+      }
+    }
+  };
+  await this.sendImgAPI(messageData);
+};
+
+
+
+
+
+
+
+
+
+
+
+//   exports.sendImgAPI = async (formData) => {
+//     const url = "https://graph.facebook.com/v4.0/me/message_attachments?access_token=" + FB_PAGE_TOKEN;
+//       await axios({
+//           method: 'post',
+//           url: url,
+//           data: formData,
+//           config: { headers: {'Content-Type': 'multipart/form-data' }}
+//         })
+//         .then(function (response) {
+//           console.log(response);
+//         })
+//         .catch(function (error) {
+//           console.log(error.response.headers);
+//         });
+//     };
+
+// exports.uploadImage = async (recipientId, url) => {
+//   var form = new FormData();
+//   form.append('message', '{"attachment":{"type":"image", "payload":{"is_reusable":true}}}');
+//   form.append('filedata', '@/src/example.jpg;type=image/jpg');
+
+//   console.log(form);
+//   // var url = "https://graph.facebook.com/v4.0/me/message_attachments?access_token=" + FB_PAGE_TOKEN;
+//   // form.submit(url, function(err, res) {
+//   //   console.log(res);
+//   // });
+//   await this.sendImgAPI(form);
+// };

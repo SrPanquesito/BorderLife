@@ -1,4 +1,6 @@
 const conexion = require('./conexion');
+const scrape = require('./modules/webscrapping');
+const canvas = require('./modules/image-generator');
 
 const isDefined = (obj) => {
     if (typeof obj == "undefined") {
@@ -119,6 +121,46 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
           sendQuickReply(sender, responseText, replies)
       break;
 
+      // Asesoria Legal
+      case "input.asesoria.legal":
+          var responseText = "Pues mira, tengo un par de amigos perfectos para ti.\nTe protegerán a capa y espada y estarán contigo durante todo el proceso.🛡️";
+          conexion.sendTextMessage(sender, responseText).then(res => {
+            var elements = [
+              {
+                "title": "Abogados [Nombre de firma]",
+                "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
+                "imageUrl": "https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
+                "defaultaction": {
+                  "type": "url",
+                  "url": "http://logonoid.com/images/batman-logo.png",
+                  "webview_height_ratio": "tall"
+                },
+                "buttons": [
+                    {
+                      "text": "Quiero asesoría",
+                      "postback": "no_gracias"
+                    }
+                  ]
+              },{
+                "title": "Abogados [Nombre de firma]",
+                "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
+                "imageUrl":"https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
+                "default_action": {
+                  "type": "web_url",
+                  "url": "https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs",
+                  "webview_height_ratio": "tall",
+                },
+                "buttons": [
+                  {
+                    "text": "Quiero asesoría legal",
+                    "postback": "no_gracias"
+                  }
+                ]
+              }];
+              handleCardMessages(elements, sender)
+          }).catch();
+      break;
+
       // Envia mensaje generico
       case "send-text":
           var responseText = "This is example of Text message."
@@ -127,8 +169,14 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
       
       // Enviame imagen
       case "send-image":
-          var imgUrl = "https://www.jacknifeprints.com/wp-content/uploads/2018/06/qotsa-20-send.jpg";
+          // canvas.generate('Cerrado')
+          //   .then(res => {
+              
+          //   })
+          //   .catch(err => console.log(err));
+          var imgUrl = "https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/26196456_1994774507457993_4626294609535137735_n.jpg?_nc_cat=103&_nc_oc=AQkB_ixDErxqyauQfxdYjftpFdKqAsSAo44yShzPr5v_Y3-IrkzubN6BCDS1WvZPl08&_nc_ht=scontent.ftij3-1.fna&oh=f47dcb0ed5ce0ccce4e40b9a82c3125d&oe=5E34C5B9";
           sendImageMessage(sender, imgUrl);
+          //conexion.uploadImage(sender, "whatever");
       break;
 
       // Envia video
@@ -295,47 +343,205 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
     else // Then payload has a value
     {
       switch (payload) {
+        case "no_gracias":
+          var responseText = "Bueno... Pero que no se te olvide que estoy aquí para ti. \nPara cualquier cosa si necesitas un amigo robot 🤖, aquí estaré *24/7* \n Siempre contigo, siempre a tu lado, siempre observandoté 🙂";
+          conexion.sendTextMessage(sender, responseText);
+        break;
+        case "asesoria.legal":
+          var responseText = "Pues mira, tengo un par de amigos perfectos para ti.\nTe protegerán a capa y espada y estarán contigo durante todo el proceso.🛡️";
+          conexion.sendTextMessage(sender, responseText).then(res => {
+            var elements = [
+              {
+                "title": "Abogados [Nombre de firma]",
+                "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
+                "imageUrl": "https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
+                "buttons": [
+                    {
+                      "text": "Quiero asesoría",
+                      "postback": "no_gracias"
+                    }
+                  ]
+              },{
+                "title": "Abogados [Nombre de firma]",
+                "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
+                "imageUrl":"https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
+                "buttons": [
+                  {
+                    "text": "Quiero asesoría legal",
+                    "postback": "no_gracias"
+                  }
+                ]
+              }];
+              handleCardMessages(elements, sender)
+          }).catch();
+        break;
+
+
+        // Pedir garitas
         case "san-ysidro-caminando":
-            var responseText = "Estos son los tiempos por San Ysidro..."
-            conexion.sendTextMessage(sender, responseText);
+            scrape.cbp('san_ysidro', '', 'peatonal')
+              .then(res => {
+                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+                var responseText = "🛂 *Cruce peatonal por San Ysidro* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
+                conexion.sendTextMessage(sender, responseText).then(res => {
+                    var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
+                    var replies = [{
+                        "content_type": "text",
+                        "title": "Quiero ayuda legal",
+                        "payload": "asesoria.legal",
+                    },
+                    {
+                        "content_type": "text",
+                        "title": "No, gracias",
+                        "payload": "no_gracias",
+                    }];
+                    sendQuickReply(sender, responseText, replies)
+                }).catch();
+              })
+              .catch(err => console.log(err));
           break;
         case "otay-caminando":
-            var responseText = "Estos son los tiempos por Otay..."
-            conexion.sendTextMessage(sender, responseText);
+            scrape.cbp('otay', 'Passenger', 'peatonal')
+              .then(res => {
+                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+                var responseText = "🛂 *Cruce peatonal por Otay* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
+                conexion.sendTextMessage(sender, responseText);
+              })
+              .catch(err => console.log(err));
           break;
         case "tecate-caminando":
-            var responseText = "Estos son los tiempos por Tecate..."
-            conexion.sendTextMessage(sender, responseText);
+            scrape.cbp('tecate', '', 'peatonal')
+              .then(res => {
+                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+                var responseText = "🛂 *Cruce peatonal por Tecate* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
+                conexion.sendTextMessage(sender, responseText);
+              })
+              .catch(err => console.log(err));
           break;
         case "calexico-east-caminando":
-            var responseText = "Estos son los tiempos por Calexico East..."
-            conexion.sendTextMessage(sender, responseText);
+            scrape.cbp('mexicali', 'East', 'peatonal')
+              .then(res => {
+                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+                var responseText = "🛂 *Cruce peatonal por Calexico East* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
+                conexion.sendTextMessage(sender, responseText);
+              })
+              .catch(err => console.log(err));
           break;
         case "calexico-west-caminando":
-            var responseText = "Estos son los tiempos por Calexico West..."
-            conexion.sendTextMessage(sender, responseText);
+            scrape.cbp('mexicali', 'West', 'peatonal')
+              .then(res => {
+                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+                var responseText = "🛂 *Cruce peatonal por Calexico West* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
+                conexion.sendTextMessage(sender, responseText);
+              })
+              .catch(err => console.log(err));
           break;
         
 
         case "san-ysidro-carro":
-            var responseText = "Estos son los tiempos por San Ysidro..."
-            conexion.sendTextMessage(sender, responseText);
+            scrape.cbp('san_ysidro', '', 'carro')
+              .then(res => {
+                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+                if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
+                var elements = [{
+                  "title": "Linea estandar vehícular: ",
+                  "subtitle": res.standard,
+                  "imageUrl": "https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/26196456_1994774507457993_4626294609535137735_n.jpg?_nc_cat=103&_nc_oc=AQkB_ixDErxqyauQfxdYjftpFdKqAsSAo44yShzPr5v_Y3-IrkzubN6BCDS1WvZPl08&_nc_ht=scontent.ftij3-1.fna&oh=f47dcb0ed5ce0ccce4e40b9a82c3125d&oe=5E34C5B9",
+                  "buttons": [
+                    {
+                      "text": ".",
+                      "postback": "PAYLOAD EXAMPLE"
+                    }
+                  ]
+                },{
+                  "title": "Linea readylane vehícular: ",
+                  "subtitle": res.readylane,
+                  "imageUrl":"https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/26196456_1994774507457993_4626294609535137735_n.jpg?_nc_cat=103&_nc_oc=AQkB_ixDErxqyauQfxdYjftpFdKqAsSAo44yShzPr5v_Y3-IrkzubN6BCDS1WvZPl08&_nc_ht=scontent.ftij3-1.fna&oh=f47dcb0ed5ce0ccce4e40b9a82c3125d&oe=5E34C5B9",
+                  "buttons": [
+                    {
+                      "text": ".",
+                      "postback": "PAYLOAD EXAMPLE"
+                    }
+                  ]
+                },{
+                  "title": "Linea sentri vehícular: ",
+                  "subtitle": res.sentri,
+                  "imageUrl":"https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/26196456_1994774507457993_4626294609535137735_n.jpg?_nc_cat=103&_nc_oc=AQkB_ixDErxqyauQfxdYjftpFdKqAsSAo44yShzPr5v_Y3-IrkzubN6BCDS1WvZPl08&_nc_ht=scontent.ftij3-1.fna&oh=f47dcb0ed5ce0ccce4e40b9a82c3125d&oe=5E34C5B9",
+                  "buttons": [
+                    {
+                      "text": ".",
+                      "postback": "PAYLOAD EXAMPLE"
+                    }
+                  ]
+                }];
+                handleCardMessages(elements, sender)
+                  .then(res => {
+                    var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
+                    var replies = [{
+                        "content_type": "text",
+                        "title": "Quiero ayuda legal",
+                        "payload": "asesoria.legal",
+                    },
+                    {
+                        "content_type": "text",
+                        "title": "No, gracias",
+                        "payload": "no_gracias",
+                    }];
+                    sendQuickReply(sender, responseText, replies)
+                  })
+                  .catch(err => console.log(err));
+              })
+              .catch(err => console.log(err));
           break;
         case "otay-carro":
-            var responseText = "Estos son los tiempos por Otay..."
-            conexion.sendTextMessage(sender, responseText);
+            scrape.cbp('otay', 'Passenger', 'carro')
+              .then(res => {
+                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+                if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
+                var responseText = "🛂 *Cruce vehícular por Otay* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
+                conexion.sendTextMessage(sender, responseText);
+              })
+              .catch(err => console.log(err));
           break;
         case "tecate-carro":
-            var responseText = "Estos son los tiempos por Tecate..."
-            conexion.sendTextMessage(sender, responseText);
+            scrape.cbp('tecate', '', 'carro')
+              .then(res => {
+                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+                if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
+                var responseText = "🛂 *Cruce vehícular por Tecate* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
+                conexion.sendTextMessage(sender, responseText);
+              })
+              .catch(err => console.log(err));
           break;
         case "calexico-east-carro":
-            var responseText = "Estos son los tiempos por Calexico East..."
-            conexion.sendTextMessage(sender, responseText);
+            scrape.cbp('mexicali', 'East', 'carro')
+              .then(res => {
+                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+                if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
+                var responseText = "🛂 *Cruce vehícular por Calexico East* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
+                conexion.sendTextMessage(sender, responseText);
+              })
+              .catch(err => console.log(err));
           break;
         case "calexico-west-carro":
-            var responseText = "Estos son los tiempos por Calexico West..."
-            conexion.sendTextMessage(sender, responseText);
+            scrape.cbp('mexicali', 'West', 'carro')
+              .then(res => {
+                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+                if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
+                var responseText = "🛂 *Cruce vehícular por Calexico West* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
+                conexion.sendTextMessage(sender, responseText);
+              })
+              .catch(err => console.log(err));
           break;
       
         default:

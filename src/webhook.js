@@ -29,9 +29,13 @@ exports.postMessage = (req, res) => {
    
         // Iterate over each messaging event
         pageEntry.messaging.forEach(function (messagingEvent) {
+          console.log(messagingEvent);
           if (messagingEvent.message) {
             conexionApi.receivedMessage(messagingEvent);
-          } else {
+          } else if (messagingEvent.postback) {
+            conexionApi.receivedPostback(messagingEvent);
+          } 
+          else {
             console.log("Webhook received unknown messagingEvent: ",messagingEvent);
           }
         });
