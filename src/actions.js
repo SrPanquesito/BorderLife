@@ -456,14 +456,14 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
             var times = [];
             // Webscrapping info/tiempos de garitas...
             scrape.cbp('san_ysidro', '', 'carro')
-              .then(res => {
+              .then(async (res) => {
                 if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
                 
                 times.push(res.standard, res.readylane, res.sentri);
                 // Crea las imagenes c/ tiempos de garitas
-                return canvas.generate([res.standard, res.readylane, res.sentri])
+                return await canvas.generate([res.standard, res.readylane, res.sentri])
               })
               .then(async (imgUrls) => {
                 // Prepara estructura del carrousel
@@ -504,14 +504,14 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
               })
               .then(carrouselRes => {
                 // Delete images after sending the carrousel
-                for (var i = 0; i < urlsToDelete.length; i++) {
-                  // Change indexOf to '.com/' + 5 when deploying
-                  var deleteUrl = urlsToDelete[i].substring(urlsToDelete[i].indexOf(".com/") + 5)
-                  fs.unlink('public/' + deleteUrl, (err) => {
-                    if (err) throw err;
-                    console.log('public/' + deleteUrl + ' was deleted');
-                  });
-                }
+                // for (var i = 0; i < urlsToDelete.length; i++) {
+                //   // Change indexOf to '.com/' + 5 when deploying     '.io/' + 4 when dev
+                //   var deleteUrl = urlsToDelete[i].substring(urlsToDelete[i].indexOf(".com/") + 5)
+                //   fs.unlink('public/' + deleteUrl, (err) => {
+                //     if (err) throw err;
+                //     console.log('public/' + deleteUrl + ' was deleted');
+                //   });
+                // }
 
                 // Send AD
                 var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
