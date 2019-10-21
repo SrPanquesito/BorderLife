@@ -41,7 +41,7 @@ exports.generate = async (text) => {
         await require("fs").writeFile("public/tiempo_temp_"+ (i+1) +".png", base64Data, 'base64', function(err) {
             if(isNaN(err)) console.log(err);
         });
-        urls.push("https://a330365b.ngrok.io/tiempo_temp_"+ (i+1) + ".png");
+        urls.push("https://digital-lab-chatbot.herokuapp.com/tiempo_temp_"+ (i+1) + ".png");
     }
 
     return urls;
