@@ -453,6 +453,7 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
 
         case "san-ysidro-carro":
             var urlsToDelete = [];
+            var times = [];
             // Webscrapping info/tiempos de garitas...
             scrape.cbp('san_ysidro', '', 'carro')
               .then(res => {
@@ -460,6 +461,7 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
                 
+                times.push(res.standard, res.readylane, res.sentri);
                 // Crea las imagenes c/ tiempos de garitas
                 return canvas.generate([res.standard, res.readylane, res.sentri])
               })
@@ -467,32 +469,32 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 // Prepara estructura del carrousel
                 urlsToDelete = imgUrls;
                 var elements = [{
-                  "title": "Linea estandar vehícular: ",
-                  "subtitle": 'Generic Text',
+                  "title": "Estandar vehícular: ",
+                  "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
                   "imageUrl": imgUrls[0],
                   "buttons": [
                     {
-                      "text": ".",
+                      "text": times[0],
                       "postback": "PAYLOAD EXAMPLE"
                     }
                   ]
                 },{
-                  "title": "Linea readylane vehícular: ",
-                  "subtitle": 'Generic Text',
+                  "title": "Readylane vehícular: ",
+                  "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
                   "imageUrl": imgUrls[1],
                   "buttons": [
                     {
-                      "text": ".",
+                      "text": times[1],
                       "postback": "PAYLOAD EXAMPLE"
                     }
                   ]
                 },{
-                  "title": "Linea sentri vehícular: ",
-                  "subtitle": 'Generic Text',
+                  "title": "Sentri vehícular: ",
+                  "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
                   "imageUrl": imgUrls[2],
                   "buttons": [
                     {
-                      "text": ".",
+                      "text": times[2],
                       "postback": "PAYLOAD EXAMPLE"
                     }
                   ]
@@ -502,13 +504,14 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
               })
               .then(carrouselRes => {
                 // Delete images after sending the carrousel
-                // for (var i = 0; i < urlsToDelete.length; i++) {
-                //   var deleteUrl = urlsToDelete[i].substring(urlsToDelete[i].indexOf(".io/") + 4)
-                //   fs.unlink('public/' + deleteUrl, (err) => {
-                //     if (err) throw err;
-                //     console.log('public/' + deleteUrl + ' was deleted');
-                //   });
-                // }
+                for (var i = 0; i < urlsToDelete.length; i++) {
+                  // Change indexOf to '.com/' + 5 when deploying
+                  var deleteUrl = urlsToDelete[i].substring(urlsToDelete[i].indexOf(".com/") + 5)
+                  fs.unlink('public/' + deleteUrl, (err) => {
+                    if (err) throw err;
+                    console.log('public/' + deleteUrl + ' was deleted');
+                  });
+                }
 
                 // Send AD
                 var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
