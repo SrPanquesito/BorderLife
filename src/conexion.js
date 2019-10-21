@@ -1,4 +1,5 @@
 const { API_AI_CLIENT_ACCESS_TOKEN, FB_PAGE_TOKEN } = process.env;
+const fs = require('fs');
 const apiai = require("apiai");
 const axios = require('axios');
 const uuid = require("uuid");
@@ -12,7 +13,6 @@ const apiAiService = apiai(API_AI_CLIENT_ACCESS_TOKEN, {
 
 // Handle intents actions from Dialogflow
 const actions = require('./actions');
-
 
 exports.receivedMessage = (event) => {
     var senderID = event.sender.id;
@@ -79,9 +79,6 @@ exports.receivedMessage = (event) => {
       //send message to api.ai
       sendToApiAi(senderID, messageText, payload);
     } 
-    // else if (messageAttachments) {
-    //     handleMessageAttachments(messageAttachments, senderID);
-    // }
   }
 
 sendToApiAi = (sender, text, payload) => {
@@ -232,41 +229,90 @@ exports.sendTextMessage = async (recipientId, text) => {
 
 
 
-  exports.sendImgAPI = async (messageData) => {
-  
-    const url = "https://graph.facebook.com/v4.0/me/message_attachments?access_token=" + FB_PAGE_TOKEN;
-      await axios.post(url, messageData)
-        .then(function (response) {
-          if (response.hasOwnProperty('data')) {
-            console.log(response.data);
+
+
+exports.sendImageMessage = async (recipientId, imageUrl, attchId) => {
+  // If it has an attachment ID it's because we generated a local image
+  if(!isNaN(attchId)) {
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        attachment: {
+          type: "image",
+          payload: {
+            attachment_id: attchId
           }
-        })
-        .catch(function (error) {
-          console.log(error.response.headers);
-        });
-    };
-
-
-exports.uploadImage = async (recipientId, url) => {
-  var messageData = {
-    message: {
-      attachment: {
-        type: "image",
-        payload: {
-          is_reusable: true,
-          url: "https://img.icons8.com/plasticine/2x/car.png"
         }
       }
-    }
-  };
-  await this.sendImgAPI(messageData);
+    };
+  }
+  // If it doesn't, it's because we're sending an external URL image
+  else {
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        attachment: {
+          type: "image",
+          payload: {
+            url: imageUrl
+          }
+        }
+      }
+    };
+  }
+    await this.callSendAPI(messageData);
 };
 
 
 
 
 
+// UPLOAD IMAGE TO FACEBOOK API instead of hosting it locally
+exports.sendImgAPI = async (recipientId, messageData) => {
+  const url = "https://graph.facebook.com/me/message_attachments?access_token=" + FB_PAGE_TOKEN;
+    await axios.post(url, messageData)
+      .then(function (response) {
+        if (response.status == 200) {
+          if (response.hasOwnProperty('data')) {
+            return response.data.attachment_id;
+          }
+        }
+      })
+      .then(res => {
+        console.log(res);
+        this.sendImageMessage(recipientId, 'whatever_imageURL', res);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
+exports.uploadImage = async (recipientId, imageUrls) => {
+  for (var i = 0; i < imageUrls.length; i++) {
+    var messageData = {
+      message: {
+        attachment: {
+          type: "image",
+          payload: {
+            is_reusable: true,
+            url: imageUrls[i]
+          }
+        }
+      }
+    };
+    await this.sendImgAPI(recipientId, messageData);
+    // Delete local generated image
+    var deleteUrl = imageUrls[i].substring(imageUrls[i].indexOf(".io/") + 4)
+    fs.unlink('public/' + deleteUrl, (err) => {
+      if (err) throw err;
+      console.log('public/' + deleteUrl + ' was deleted');
+    });
+  }
+};
 
 
 

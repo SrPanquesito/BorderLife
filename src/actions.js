@@ -1,6 +1,7 @@
 const conexion = require('./conexion');
 const scrape = require('./modules/webscrapping');
 const canvas = require('./modules/image-generator');
+const fs = require('fs');
 
 const isDefined = (obj) => {
     if (typeof obj == "undefined") {
@@ -21,7 +22,7 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
     
       case "input.welcome":
           var imgUrl = "https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/26112397_1995779794024131_2635074728864296031_n.png?_nc_cat=101&_nc_eui2=AeGlk0P1hn-zxVFW8SQ6R9IT1xwXhPQrfX5sb2K8s_Oxlykdga3V0GmkgWB3IzvrniPwStXQcshFa6EuHyWwspuP3JT7Qj3tAo5LEc-FR7abRQ&_nc_oc=AQmsM3PpwZnuoHYc4Se5v-YeEI3CNUF3jjLzS8gUHyd_fGxON6WB7WeG0Cf32JDrJGA&_nc_ht=scontent.ftij3-1.fna&oh=bd83d7cb76fa447c9d3bb99847680558&oe=5E30E1A0";
-          sendImageMessage(sender, imgUrl)
+          conexion.sendImageMessage(sender, imgUrl)
             .then(() => {
               conexion.sendTextMessage(sender, responseText)
                 .then(() => {
@@ -169,14 +170,21 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
       
       // Enviame imagen
       case "send-image":
-          // canvas.generate('Cerrado')
-          //   .then(res => {
-              
-          //   })
-          //   .catch(err => console.log(err));
-          var imgUrl = "https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/26196456_1994774507457993_4626294609535137735_n.jpg?_nc_cat=103&_nc_oc=AQkB_ixDErxqyauQfxdYjftpFdKqAsSAo44yShzPr5v_Y3-IrkzubN6BCDS1WvZPl08&_nc_ht=scontent.ftij3-1.fna&oh=f47dcb0ed5ce0ccce4e40b9a82c3125d&oe=5E34C5B9";
-          sendImageMessage(sender, imgUrl);
-          //conexion.uploadImage(sender, "whatever");
+          canvas.generate(['Cerrado', 'Abierto', 'N/A'])
+            .then(async (imgUrls) => {
+              for (var i = 0; i < imgUrls.length; i++) {
+                await conexion.sendImageMessage(sender, imgUrls[i]);
+                // Delete local generated image
+                var deleteUrl = imgUrls[i].substring(imgUrls[i].indexOf(".io/") + 4)
+                fs.unlink('public/' + deleteUrl, (err) => {
+                  if (err) throw err;
+                  console.log('public/' + deleteUrl + ' was deleted');
+                });
+              }
+              // If we want to upload to FB API
+              //conexion.uploadImage(sender, imgUrls).then().catch();
+            })
+            .catch(err => console.log(err));
       break;
 
       // Envia video
@@ -444,15 +452,24 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
         
 
         case "san-ysidro-carro":
+            var urlsToDelete = [];
+            // Webscrapping info/tiempos de garitas...
             scrape.cbp('san_ysidro', '', 'carro')
               .then(res => {
                 if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
+                
+                // Crea las imagenes c/ tiempos de garitas
+                return canvas.generate([res.standard, res.readylane, res.sentri])
+              })
+              .then(async (imgUrls) => {
+                // Prepara estructura del carrousel
+                urlsToDelete = imgUrls;
                 var elements = [{
                   "title": "Linea estandar vehícular: ",
-                  "subtitle": res.standard,
-                  "imageUrl": "https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/26196456_1994774507457993_4626294609535137735_n.jpg?_nc_cat=103&_nc_oc=AQkB_ixDErxqyauQfxdYjftpFdKqAsSAo44yShzPr5v_Y3-IrkzubN6BCDS1WvZPl08&_nc_ht=scontent.ftij3-1.fna&oh=f47dcb0ed5ce0ccce4e40b9a82c3125d&oe=5E34C5B9",
+                  "subtitle": 'Generic Text',
+                  "imageUrl": imgUrls[0],
                   "buttons": [
                     {
                       "text": ".",
@@ -461,8 +478,8 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                   ]
                 },{
                   "title": "Linea readylane vehícular: ",
-                  "subtitle": res.readylane,
-                  "imageUrl":"https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/26196456_1994774507457993_4626294609535137735_n.jpg?_nc_cat=103&_nc_oc=AQkB_ixDErxqyauQfxdYjftpFdKqAsSAo44yShzPr5v_Y3-IrkzubN6BCDS1WvZPl08&_nc_ht=scontent.ftij3-1.fna&oh=f47dcb0ed5ce0ccce4e40b9a82c3125d&oe=5E34C5B9",
+                  "subtitle": 'Generic Text',
+                  "imageUrl": imgUrls[1],
                   "buttons": [
                     {
                       "text": ".",
@@ -471,8 +488,8 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                   ]
                 },{
                   "title": "Linea sentri vehícular: ",
-                  "subtitle": res.sentri,
-                  "imageUrl":"https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/26196456_1994774507457993_4626294609535137735_n.jpg?_nc_cat=103&_nc_oc=AQkB_ixDErxqyauQfxdYjftpFdKqAsSAo44yShzPr5v_Y3-IrkzubN6BCDS1WvZPl08&_nc_ht=scontent.ftij3-1.fna&oh=f47dcb0ed5ce0ccce4e40b9a82c3125d&oe=5E34C5B9",
+                  "subtitle": 'Generic Text',
+                  "imageUrl": imgUrls[2],
                   "buttons": [
                     {
                       "text": ".",
@@ -480,33 +497,44 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                     }
                   ]
                 }];
-                handleCardMessages(elements, sender)
-                  .then(res => {
-                    var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
-                    var replies = [{
-                        "content_type": "text",
-                        "title": "Quiero ayuda legal",
-                        "payload": "asesoria.legal",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "No, gracias",
-                        "payload": "no_gracias",
-                    }];
-                    sendQuickReply(sender, responseText, replies)
-                  })
-                  .catch(err => console.log(err));
+                // Envia carrousel
+                return await handleCardMessages(elements, sender)
+              })
+              .then(carrouselRes => {
+                // Delete images after sending the carrousel
+                // for (var i = 0; i < urlsToDelete.length; i++) {
+                //   var deleteUrl = urlsToDelete[i].substring(urlsToDelete[i].indexOf(".io/") + 4)
+                //   fs.unlink('public/' + deleteUrl, (err) => {
+                //     if (err) throw err;
+                //     console.log('public/' + deleteUrl + ' was deleted');
+                //   });
+                // }
+
+                // Send AD
+                var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
+                var replies = [{
+                    "content_type": "text",
+                    "title": "Quiero ayuda legal",
+                    "payload": "asesoria.legal",
+                },
+                {
+                    "content_type": "text",
+                    "title": "No, gracias",
+                    "payload": "no_gracias",
+                }];
+                sendQuickReply(sender, responseText, replies)
               })
               .catch(err => console.log(err));
           break;
+
         case "otay-carro":
             scrape.cbp('otay', 'Passenger', 'carro')
-              .then(res => {
+              .then(async (res) => {
                 if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
                 var responseText = "🛂 *Cruce vehícular por Otay* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-                conexion.sendTextMessage(sender, responseText);
+                await conexion.sendTextMessage(sender, responseText);
               })
               .catch(err => console.log(err));
           break;

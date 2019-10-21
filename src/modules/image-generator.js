@@ -1,41 +1,49 @@
-const { FB_PAGE_TOKEN } = process.env;
-const axios = require('axios');
-
 const { createCanvas } = require('canvas')
 const canvas = createCanvas(1200, 628)
 const ctx = canvas.getContext('2d')
 
-
+var urls = [];
 
 exports.generate = async (text) => {
 
-    ctx.globalAlpha = 1
-    ctx.font = 'normal 90px Verdana, serif'
+    for (var i = 0; i < text.length; i++) {
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Create gradient
-    grd = ctx.createLinearGradient(146, 0, 600, 628);
+        ctx.globalAlpha = 1
+        ctx.font = 'normal 90px Verdana, serif'
 
-    // Add colors
-    grd.addColorStop(0.227, 'rgba(112, 0, 112, 1.000)');
-    grd.addColorStop(0.593, 'rgba(61, 0, 137, 1.000)');
-    grd.addColorStop(1.000, 'rgba(51, 0, 109, 1.000)');
+        // Create gradient
+        grd = ctx.createLinearGradient(146, 0, 600, 628);
 
-    // Fill with gradient
-    ctx.fillStyle = grd;
-    ctx.fillRect(0, 0, 1200, 628);
+        // Add colors
+        grd.addColorStop(0.227, 'rgba(112, 0, 112, 1.000)');
+        grd.addColorStop(0.593, 'rgba(61, 0, 137, 1.000)');
+        grd.addColorStop(1.000, 'rgba(51, 0, 109, 1.000)');
 
-    ctx.translate(canvas.width / 2, canvas.height / 2);
+        // Fill with gradient
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, 1200, 628);
 
-    ctx.textAlign = "center";
+        ctx.translate(canvas.width / 2, canvas.height / 2);
 
-    ctx.strokeStyle = '#000'
-    ctx.strokeText(text, -2, -2)
+        ctx.textAlign = "center";
 
-    ctx.fillStyle = '#cecece'
-    ctx.fillText(text, 0, 0)
+        ctx.strokeStyle = '#000'
+        ctx.strokeText(text[i], -2, -2)
+
+        ctx.fillStyle = '#cecece'
+        ctx.fillText(text[i], 0, 0)
 
 
+        var base64Data = canvas.toDataURL().replace(/^data:image\/png;base64,/, "");
 
-    // canvas.createPNGStream().pipe(require('fs').createWriteStream(require('path').join(__dirname, 'text.png')))
-    return canvas.toDataURL();
+        await require("fs").writeFile("public/tiempo_temp_"+ (i+1) +".png", base64Data, 'base64', function(err) {
+            if(isNaN(err)) console.log(err);
+        });
+        urls.push("https://a330365b.ngrok.io/tiempo_temp_"+ (i+1) + ".png");
+    }
+
+    return urls;
+    //await canvas.createPNGStream().pipe(require('fs').createWriteStream(require('path').join(__dirname, 'text.png')))
 }
