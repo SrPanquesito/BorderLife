@@ -46,5 +46,4 @@ exports.generate = async (text) => {
     }
 
     return urls;
-    //await canvas.createPNGStream().pipe(require('fs').createWriteStream(require('path').join(__dirname, 'text.png')))
 }

@@ -313,36 +313,3 @@ exports.uploadImage = async (recipientId, imageUrls) => {
     });
   }
 };
-
-
-
-
-
-//   exports.sendImgAPI = async (formData) => {
-//     const url = "https://graph.facebook.com/v4.0/me/message_attachments?access_token=" + FB_PAGE_TOKEN;
-//       await axios({
-//           method: 'post',
-//           url: url,
-//           data: formData,
-//           config: { headers: {'Content-Type': 'multipart/form-data' }}
-//         })
-//         .then(function (response) {
-//           console.log(response);
-//         })
-//         .catch(function (error) {
-//           console.log(error.response.headers);
-//         });
-//     };
-
-// exports.uploadImage = async (recipientId, url) => {
-//   var form = new FormData();
-//   form.append('message', '{"attachment":{"type":"image", "payload":{"is_reusable":true}}}');
-//   form.append('filedata', '@/src/example.jpg;type=image/jpg');
-
-//   console.log(form);
-//   // var url = "https://graph.facebook.com/v4.0/me/message_attachments?access_token=" + FB_PAGE_TOKEN;
-//   // form.submit(url, function(err, res) {
-//   //   console.log(res);
-//   // });
-//   await this.sendImgAPI(form);
-// };
