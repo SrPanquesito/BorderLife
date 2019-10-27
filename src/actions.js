@@ -205,142 +205,6 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
           sendVideoMessage(sender, messageData);
       break;
 
-      // Envia quick replies
-      case "send-quick-reply":
-          var responseText = "Choose the options"
-          var replies = [{
-              "content_type": "text",
-              "title": "Example 1",
-              "payload": "Example 1",
-          },
-          {
-              "content_type": "text",
-              "title": "Example 2",
-              "payload": "Example 2",
-          },
-          {
-              "content_type": "text",
-              "title": "Example 3",
-              "payload": "Example 3",
-          }];
-          sendQuickReply(sender, responseText, replies)
-      break;
-
-      // Envia carousel
-      case "send-carousel" :
-          var elements = [{
-            "title": "Welcome!",
-            "subtitle": "We have the right hat for everyone.We have the right hat for everyone.We have the right hat for everyone.",
-            "imageUrl": "https://www.stepforwardmichigan.org/wp-content/uploads/2017/03/step-foward-fb-1200x628-house.jpg",
-            "buttons": [
-              {
-                "postback": "https://f1948e04.ngrok.io",
-                "text": "View Website"
-              }, {
-                "text": "Start Chatting",
-                "postback": "PAYLOAD EXAMPLE"
-              }
-            ]
-          }, {
-            "title": "Welcome!",
-            "imageUrl": "https://www.stepforwardmichigan.org/wp-content/uploads/2017/03/step-foward-fb-1200x628-house.jpg",
-            "subtitle": "We have the right hat for everyone.We have the right hat for everyone.We have the right hat for everyone.",
-            "buttons": [
-              {
-                "postback": "https://f1948e04.ngrok.io",
-                "text": "View Website"
-              }, {
-                "text": "Start Chatting",
-                "postback": "PAYLOAD EXAMPLE"
-              }
-            ]
-          },{
-            "title": "Welcome!",
-            "imageUrl": "https://www.stepforwardmichigan.org/wp-content/uploads/2017/03/step-foward-fb-1200x628-house.jpg",
-            "subtitle": "We have the right hat for everyone.We have the right hat for everyone.We have the right hat for everyone.",
-            "buttons": [
-              {
-                "postback": "https://f1948e04.ngrok.io",
-                "text": "View Website"
-              }, {
-                "text": "Start Chatting",
-                "postback": "PAYLOAD EXAMPLE"
-              }
-            ]
-          }];
-          handleCardMessages(elements, sender)
-      break;
-
-      // Envia boton
-      case "send-button":
-          var responseText = "exmple buttons";
-          var elements = [{
-              "type": "web_url",
-              "url": "https://f1948e04.ngrok.io",
-              "title": "URL",
-          }, {
-              "type": "postback",
-              "title": "POSTBACK",
-              "payload": "POSTBACK TEST"
-          }, {
-              "type": "phone_number",
-              "title": "CALL",
-              "payload": "+919510733999"
-          }];
-          sendButtonMessage(sender, responseText, elements)
-      break;
-
-      // Envia recibo
-      case "send-receipt":
-          const recipient_name = "Nikhil Savaliya";
-          const currency = "INR";
-          const payment_method = "Visa 2345";
-          const timestamp = 1428444852;
-          const elementRec = [{
-              "title": "Classic Blue T-Shirt",
-              "subtitle": "100% Soft and Luxurious Cotton",
-              "quantity": 1,
-              "price": 350,
-              "currency": "INR",
-              "image_url": "http://pngimg.com/uploads/tshirt/tshirt_PNG5450.png"
-          }];
-          const address = {
-              "street_1": "A-6, First Floor",
-              "street_2": "Safal Profitaire,",
-              "city": "Ahmedabad",
-              "postal_code": "380015",
-              "state": "Gujarat",
-              "country": "IN"
-          };
-          const summary = {
-              "subtotal": 350.00,
-              "shipping_cost": 4.95,
-              "total_tax": 6.19,
-              "total_cost": 361.14
-          };
-          const adjustments = [
-              {
-                  "name": "New Customer Discount",
-                  "amount": 20
-              },
-              {
-                  "name": "$10 Off Coupon",
-                  "amount": 10
-              }
-          ];
-          const order_url = "https://37cf1e51.ngrok.io"
-          sendReceiptMessage(sender,
-              recipient_name,
-              currency,
-              payment_method,
-              timestamp,
-              elementRec,
-              address,
-              summary,
-              adjustments,
-              order_url);
-      break;
-
         default:
           //unhandled action, just send back the text
           conexion.sendTextMessage(sender, responseText);
@@ -504,14 +368,14 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
               })
               .then(carrouselRes => {
                 // Delete images after sending the carrousel
-                // for (var i = 0; i < urlsToDelete.length; i++) {
-                //   // Change indexOf to '.com/' + 5 when deploying     '.io/' + 4 when dev
-                //   var deleteUrl = urlsToDelete[i].substring(urlsToDelete[i].indexOf(".com/") + 5)
-                //   fs.unlink('public/' + deleteUrl, (err) => {
-                //     if (err) throw err;
-                //     console.log('public/' + deleteUrl + ' was deleted');
-                //   });
-                // }
+                for (var i = 0; i < urlsToDelete.length; i++) {
+                  // Change indexOf to '.com/' + 5 when deploying     '.io/' + 4 when dev
+                  var deleteUrl = urlsToDelete[i].substring(urlsToDelete[i].indexOf(".com/") + 5)
+                  fs.unlink('public/' + deleteUrl, (err) => {
+                    if (err) throw err;
+                    console.log('public/' + deleteUrl + ' was deleted');
+                  });
+                }
 
                 // Send AD
                 var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
@@ -589,21 +453,7 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* --------------- FUNCIONES MAGICAS --------------- */
+/* --------------- CUSTOM DEVELOPMENT - FUNCIONES MAGICAS --------------- */
 // Funciones que hacen la magia ~ (Estructuran los mensajes al formato JSON y los envian al Messenger API)
 const sendImageMessage = async (recipientId, imageUrl) => {
     var messageData = {
@@ -699,64 +549,6 @@ const sendImageMessage = async (recipientId, imageUrl) => {
           payload: {
             template_type: "generic",
             elements: elements
-          }
-        }
-      }
-    };
-    await conexion.callSendAPI(messageData);
-  }
-
-  const sendButtonMessage = async (recipientId, text, buttons) => {
-    var messageData = {
-      recipient: {
-        id: recipientId
-      },
-      message: {
-        attachment: {
-          type: "template",
-          payload: {
-            template_type: "button",
-            text: text,
-            buttons: buttons
-          }
-        }
-      }
-    };
-    await conexion.callSendAPI(messageData);
-  }
-
-  const sendReceiptMessage = async (
-    recipientId,
-    recipient_name,
-    currency,
-    payment_method,
-    timestamp,
-    elements,
-    address,
-    summary,
-    adjustments,
-    order_url
-   ) => {
-    var receiptId = "order" + Math.floor(Math.random() * 1000);
-    var messageData = {
-      recipient: {
-        id: recipientId
-      },
-      message: {
-        attachment: {
-          type: "template",
-          payload: {
-            template_type: "receipt",
-            recipient_name: recipient_name,
-            order_number: receiptId,
-            currency: currency,
-            payment_method: payment_method,
-            order_url: order_url,
-            timestamp: timestamp,
-            address: address,
-            summary: summary,
-            adjustments: adjustments,
-            elements: elements,
           }
         }
       }

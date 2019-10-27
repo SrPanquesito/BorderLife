@@ -229,7 +229,7 @@ exports.sendTextMessage = async (recipientId, text) => {
 
 
 
-
+// ----------------- CUSTOM DEVELOPMENT -----------------
 
 exports.sendImageMessage = async (recipientId, imageUrl, attchId) => {
   // If it has an attachment ID it's because we generated a local image

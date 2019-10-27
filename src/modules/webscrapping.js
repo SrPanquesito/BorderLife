@@ -1,7 +1,6 @@
 const cheerio = require('cheerio');
 const axios = require('axios');
 
-
 /* -------------------------------- Customs and Border Protection --------------------------------
     Webscrapper para pagina de garitas: https://apps.cbp.gov/bwt/mobile.asp?action=n&pn=2506
     El parametro 'garita' se indicaran con mexicali, otay, san_ysidro y tecate
