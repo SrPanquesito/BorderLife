@@ -586,7 +586,7 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
 const AD_Abogados = async (sender) => {
   var responseText = "Si tienes problemas legales tengo un par de amigos perfectos para ti.\nTe protegerán a capa y espada y estarán contigo durante todo el proceso.🛡️";
   await conexion.sendTextMessage(sender, responseText)
-    .then(res => {
+    .then(async res => {
       var elements = [
         {
           "title": "Abogados [Nombre de firma]",
@@ -621,7 +621,7 @@ const AD_Abogados = async (sender) => {
             }
           ]
         }];
-        handleCardMessages(elements, sender)
+        await handleCardMessages(elements, sender)
     })
     .catch();
 
