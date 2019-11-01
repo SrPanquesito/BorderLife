@@ -607,6 +607,9 @@ const AD_Abogados = async (sender) => {
         handleCardMessages(elements, sender)
     })
     .catch();
+
+    var responseText = "http://abogadosnowusa.com/"
+    await conexion.sendTextMessage(sender, responseText);
 };
 
 
