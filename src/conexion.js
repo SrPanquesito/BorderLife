@@ -147,6 +147,55 @@ exports.callSendAPI = async (messageData) => {
         });
     };
   
+  // Get profile information from user id
+  exports.getProfileInfo = async (recipientId) => {
+    var json = {
+      first_name: '',
+      last_name: '',
+      profile_pic: '',
+      locale: '',
+      timezone: 0,
+      gender: '',
+      id: ''
+    };
+    const url = 'https://graph.facebook.com/' + recipientId + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + FB_PAGE_TOKEN;
+      await axios.get(url)
+        .then(response => {
+          if (response.status == 200) {
+            if (response.hasOwnProperty('data')) {
+              return response.data;
+            }
+          }
+        })
+        .then(res => {
+          json = res;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    return json;
+  };
+
+  // exports.whitelist = async (recipientId) => {
+  //   var json;
+  //   const url = 'https://graph.facebook.com/' + recipientId + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + FB_PAGE_TOKEN;
+  //     await axios.get(url)
+  //       .then(response => {
+  //         if (response.status == 200) {
+  //           if (response.hasOwnProperty('data')) {
+  //             return response.data;
+  //           }
+  //         }
+  //       })
+  //       .then(res => {
+  //         json = res;
+  //       })
+  //       .catch(function (error) {
+  //         json = error;
+  //       });
+  //   return json;
+  // };
+
   
     
   const isDefined = (obj) => {

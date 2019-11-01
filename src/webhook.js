@@ -11,8 +11,9 @@ exports.getMessage = (req, res) => {
     ) {
       res.status(200).send(req.query["hub.challenge"]);
     } else {
-      console.error("Failed validation. Make sure the validation tokens match.");
-      res.sendStatus(403);
+      const error = new Error('Failed validation. Make sure the validation tokens match.');
+      error.statusCode = 403;
+      throw error;
     }
 };
 

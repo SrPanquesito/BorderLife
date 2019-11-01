@@ -3,6 +3,8 @@ const scrape = require('./modules/webscrapping');
 const canvas = require('./modules/image-generator');
 const fs = require('fs');
 
+const userController = require('./db/controllers/userInteraction');
+
 const isDefined = (obj) => {
     if (typeof obj == "undefined") {
       return false;
@@ -128,33 +130,35 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
           conexion.sendTextMessage(sender, responseText).then(res => {
             var elements = [
               {
-                "title": "Abogados [Nombre de firma]",
+                "title": "Abogados ;) [Nombre de firma]",
                 "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
                 "imageUrl": "https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
-                "defaultaction": {
-                  "type": "url",
-                  "url": "http://logonoid.com/images/batman-logo.png",
-                  "webview_height_ratio": "tall"
+                "default_action": {
+                  "type": "web_url",
+                  "url": "https://digitallabagency.com/"
                 },
                 "buttons": [
-                    {
-                      "text": "Quiero asesoría",
-                      "postback": "no_gracias"
-                    }
-                  ]
+                  {
+                    "text":"Click para ver más",
+                    "postback":"https://digitallabagency.com/",
+                    "webview_height_ratio": "tall",
+                    "messenger_extensions": "true"
+                  }
+                ]
               },{
                 "title": "Abogados [Nombre de firma]",
                 "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
                 "imageUrl":"https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
                 "default_action": {
                   "type": "web_url",
-                  "url": "https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs",
-                  "webview_height_ratio": "tall",
+                  "url": "https://digitallabagency.com/"
                 },
                 "buttons": [
                   {
-                    "text": "Quiero asesoría legal",
-                    "postback": "no_gracias"
+                    "text":"Click para ver más",
+                    "postback":"https://digitallabagency.com/",
+                    "webview_height_ratio": "tall",
+                    "messenger_extensions": "true"
                   }
                 ]
               }];
@@ -165,7 +169,12 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
       // Envia mensaje generico
       case "send-text":
           var responseText = "This is example of Text message."
-          conexion.sendTextMessage(sender, responseText);
+          conexion.sendTextMessage(sender, responseText)
+            .then(async res => {
+              var txt = await conexion.getProfileInfo(sender);
+              console.log(txt);
+            })
+            .catch();
       break;
       
       // Enviame imagen
@@ -194,11 +203,12 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                   "media_type": "video",
                   "url": "https://www.facebook.com/JoshHommeWorldwideFans/videos/1579947835628662/",
                   "buttons": [
-                      {
-                          "type": "web_url",
-                          "url": "https://www.facebook.com/BeatHubMX/",
-                          "title": "View Website",
-                      }
+                    {
+                      "type":"web_url",
+                      "url":"https://digitallabagency.com/",
+                      "title":"URL Button",
+                      "webview_height_ratio": "full"
+                    }
                   ]
               }
           ]
@@ -227,20 +237,32 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 "title": "Abogados [Nombre de firma]",
                 "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
                 "imageUrl": "https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
+                "default_action": {
+                  "type": "web_url",
+                  "url": "https://digitallabagency.com/"
+                },
                 "buttons": [
-                    {
-                      "text": "Quiero asesoría",
-                      "postback": "no_gracias"
-                    }
-                  ]
+                  {
+                    "text":"Click para ver más",
+                    "postback":"https://digitallabagency.com/",
+                    "webview_height_ratio": "tall",
+                    "messenger_extensions": "true"
+                  }
+                ]
               },{
                 "title": "Abogados [Nombre de firma]",
                 "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
                 "imageUrl":"https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
+                "default_action": {
+                  "type": "web_url",
+                  "url": "https://digitallabagency.com/"
+                },
                 "buttons": [
                   {
-                    "text": "Quiero asesoría legal",
-                    "postback": "no_gracias"
+                    "text":"Click para ver más",
+                    "postback":"https://digitallabagency.com/",
+                    "webview_height_ratio": "tall",
+                    "messenger_extensions": "true"
                   }
                 ]
               }];
@@ -256,20 +278,17 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 var responseText = "🛂 *Cruce peatonal por San Ysidro* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-                conexion.sendTextMessage(sender, responseText).then(res => {
-                    var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
-                    var replies = [{
-                        "content_type": "text",
-                        "title": "Quiero ayuda legal",
-                        "payload": "asesoria.legal",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "No, gracias",
-                        "payload": "no_gracias",
-                    }];
-                    sendQuickReply(sender, responseText, replies)
-                }).catch();
+                return conexion.sendTextMessage(sender, responseText);
+              })
+              .then(userInfo => {
+                // Registra un nuevo usuario o aumenta contador webscrapping
+                return userController.signupFB(sender);
+              })
+              .then(async userInfo => {
+                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+                  // Enviar AD si son multiplos de 3 y es diferente de 0
+                  await AD_Abogados(sender);
+                }
               })
               .catch(err => console.log(err));
           break;
@@ -279,7 +298,17 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 var responseText = "🛂 *Cruce peatonal por Otay* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-                conexion.sendTextMessage(sender, responseText);
+                return conexion.sendTextMessage(sender, responseText);
+              })
+              .then(res => {
+                // Registra un nuevo usuario o aumenta contador webscrapping
+                return userController.signupFB(sender);
+              })
+              .then(async userInfo => {
+                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+                  // Enviar AD si son multiplos de 3 y es diferente de 0
+                  await AD_Abogados(sender);
+                }
               })
               .catch(err => console.log(err));
           break;
@@ -289,7 +318,17 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 var responseText = "🛂 *Cruce peatonal por Tecate* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-                conexion.sendTextMessage(sender, responseText);
+                return conexion.sendTextMessage(sender, responseText);
+              })
+              .then(res => {
+                // Registra un nuevo usuario o aumenta contador webscrapping
+                return userController.signupFB(sender);
+              })
+              .then(async userInfo => {
+                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+                  // Enviar AD si son multiplos de 3 y es diferente de 0
+                  await AD_Abogados(sender);
+                }
               })
               .catch(err => console.log(err));
           break;
@@ -299,7 +338,17 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 var responseText = "🛂 *Cruce peatonal por Calexico East* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-                conexion.sendTextMessage(sender, responseText);
+                return conexion.sendTextMessage(sender, responseText);
+              })
+              .then(res => {
+                // Registra un nuevo usuario o aumenta contador webscrapping
+                return userController.signupFB(sender);
+              })
+              .then(async userInfo => {
+                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+                  // Enviar AD si son multiplos de 3 y es diferente de 0
+                  await AD_Abogados(sender);
+                }
               })
               .catch(err => console.log(err));
           break;
@@ -309,7 +358,31 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 var responseText = "🛂 *Cruce peatonal por Calexico West* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-                conexion.sendTextMessage(sender, responseText);
+                return conexion.sendTextMessage(sender, responseText);
+              })
+              .then(res => {
+                // Registra un nuevo usuario o aumenta contador webscrapping
+                return userController.signupFB(sender);
+              })
+              .then(userInfo => {
+                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+                  // Enviar AD si son multiplos de 3 y es diferente de 0
+                  return AD_Abogados(sender);
+                }
+              })
+              .then(res => {
+                var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
+                var replies = [{
+                    "content_type": "text",
+                    "title": "Quiero ayuda legal",
+                    "payload": "asesoria.legal",
+                },
+                {
+                    "content_type": "text",
+                    "title": "No, gracias",
+                    "payload": "no_gracias",
+                }];
+                sendQuickReply(sender, responseText, replies)
               })
               .catch(err => console.log(err));
           break;
@@ -396,12 +469,22 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
 
         case "otay-carro":
             scrape.cbp('otay', 'Passenger', 'carro')
-              .then(async (res) => {
+              .then(res => {
                 if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
                 var responseText = "🛂 *Cruce vehícular por Otay* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-                await conexion.sendTextMessage(sender, responseText);
+                return conexion.sendTextMessage(sender, responseText);
+              })
+              .then(res => {
+                // Registra un nuevo usuario o aumenta contador webscrapping
+                return userController.signupFB(sender);
+              })
+              .then(async userInfo => {
+                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+                  // Enviar AD si son multiplos de 3 y es diferente de 0
+                  await AD_Abogados(sender);
+                }
               })
               .catch(err => console.log(err));
           break;
@@ -412,7 +495,17 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
                 var responseText = "🛂 *Cruce vehícular por Tecate* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-                conexion.sendTextMessage(sender, responseText);
+                return conexion.sendTextMessage(sender, responseText);
+              })
+              .then(res => {
+                // Registra un nuevo usuario o aumenta contador webscrapping
+                return userController.signupFB(sender);
+              })
+              .then(async userInfo => {
+                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+                  // Enviar AD si son multiplos de 3 y es diferente de 0
+                  await AD_Abogados(sender);
+                }
               })
               .catch(err => console.log(err));
           break;
@@ -423,7 +516,17 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
                 var responseText = "🛂 *Cruce vehícular por Calexico East* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-                conexion.sendTextMessage(sender, responseText);
+                return conexion.sendTextMessage(sender, responseText);
+              })
+              .then(res => {
+                // Registra un nuevo usuario o aumenta contador webscrapping
+                return userController.signupFB(sender);
+              })
+              .then(async userInfo => {
+                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+                  // Enviar AD si son multiplos de 3 y es diferente de 0
+                  await AD_Abogados(sender);
+                }
               })
               .catch(err => console.log(err));
           break;
@@ -434,7 +537,17 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
                 var responseText = "🛂 *Cruce vehícular por Calexico West* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-                conexion.sendTextMessage(sender, responseText);
+                return conexion.sendTextMessage(sender, responseText);
+              })
+              .then(res => {
+                // Registra un nuevo usuario o aumenta contador webscrapping
+                return userController.signupFB(sender);
+              })
+              .then(async userInfo => {
+                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+                  // Enviar AD si son multiplos de 3 y es diferente de 0
+                  await AD_Abogados(sender);
+                }
               })
               .catch(err => console.log(err));
           break;
@@ -449,6 +562,54 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
 
 
   } // End function
+
+
+
+// -------- ADS --------
+const AD_Abogados = async (sender) => {
+  var responseText = "Si tienes problemas legales tengo un par de amigos perfectos para ti.\nTe protegerán a capa y espada y estarán contigo durante todo el proceso.🛡️";
+  await conexion.sendTextMessage(sender, responseText)
+    .then(res => {
+      var elements = [
+        {
+          "title": "Abogados [Nombre de firma]",
+          "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
+          "imageUrl": "https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
+          "default_action": {
+            "type": "web_url",
+            "url": "https://digitallabagency.com/"
+          },
+          "buttons": [
+            {
+              "text":"Click para ver más",
+              "postback":"https://digitallabagency.com/",
+              "webview_height_ratio": "tall",
+              "messenger_extensions": "true"
+            }
+          ]
+        },{
+          "title": "Abogados [Nombre de firma]",
+          "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
+          "imageUrl":"https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
+          "default_action": {
+            "type": "web_url",
+            "url": "https://digitallabagency.com/"
+          },
+          "buttons": [
+            {
+              "text":"Click para ver más",
+              "postback":"https://digitallabagency.com/",
+              "webview_height_ratio": "tall",
+              "messenger_extensions": "true"
+            }
+          ]
+        }];
+        handleCardMessages(elements, sender)
+    })
+    .catch();
+};
+
+
 
 
 
@@ -516,7 +677,9 @@ const sendImageMessage = async (recipientId, imageUrl) => {
           button = {
             type: "web_url",
             title: message.buttons[b].text,
-            url: message.buttons[b].postback
+            url: message.buttons[b].postback,
+            webview_height_ratio: "tall",
+            messenger_extensions: "true"
           };
         } else {
           button = {
@@ -527,12 +690,29 @@ const sendImageMessage = async (recipientId, imageUrl) => {
         }
         buttons.push(button);
       }
-      let element = {
-        title: message.title,
-        image_url: message.imageUrl,
-        subtitle: message.subtitle,
-        buttons: buttons
-      };
+
+      let element;
+      if (message.default_action) {
+        element = {
+          title: message.title,
+          image_url: message.imageUrl,
+          subtitle: message.subtitle,
+          default_action: {
+            type: "web_url",
+            url: message.default_action.url,
+            webview_height_ratio: "tall",
+            messenger_extensions: "true"
+          },
+          buttons: buttons
+        };
+      } else {
+        element = {
+          title: message.title,
+          image_url: message.imageUrl,
+          subtitle: message.subtitle,
+          buttons: buttons
+        };
+      }
       elements.push(element);
     }
     await sendGenericMessage(sender, elements);
