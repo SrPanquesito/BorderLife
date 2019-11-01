@@ -370,20 +370,20 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
                   return AD_Abogados(sender);
                 }
               })
-              .then(res => {
-                var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
-                var replies = [{
-                    "content_type": "text",
-                    "title": "Quiero ayuda legal",
-                    "payload": "asesoria.legal",
-                },
-                {
-                    "content_type": "text",
-                    "title": "No, gracias",
-                    "payload": "no_gracias",
-                }];
-                sendQuickReply(sender, responseText, replies)
-              })
+              // .then(res => {
+              //   var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
+              //   var replies = [{
+              //       "content_type": "text",
+              //       "title": "Quiero ayuda legal",
+              //       "payload": "asesoria.legal",
+              //   },
+              //   {
+              //       "content_type": "text",
+              //       "title": "No, gracias",
+              //       "payload": "no_gracias",
+              //   }];
+              //   sendQuickReply(sender, responseText, replies)
+              // })
               .catch(err => console.log(err));
           break;
         
@@ -393,77 +393,94 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
             var times = [];
             // Webscrapping info/tiempos de garitas...
             scrape.cbp('san_ysidro', '', 'carro')
-              .then(async (res) => {
+              .then(res => {
                 if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
                 if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
                 if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
-                
-                times.push(res.standard, res.readylane, res.sentri);
-                // Crea las imagenes c/ tiempos de garitas
-                return await canvas.generate([res.standard, res.readylane, res.sentri])
+                var responseText = "🛂 *Cruce vehícular por San Ysidro* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
+                return conexion.sendTextMessage(sender, responseText);
               })
-              .then(async (imgUrls) => {
-                // Prepara estructura del carrousel
-                urlsToDelete = imgUrls;
-                var elements = [{
-                  "title": "Estandar vehícular: ",
-                  "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
-                  "imageUrl": imgUrls[0],
-                  "buttons": [
-                    {
-                      "text": times[0],
-                      "postback": "PAYLOAD EXAMPLE"
-                    }
-                  ]
-                },{
-                  "title": "Readylane vehícular: ",
-                  "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
-                  "imageUrl": imgUrls[1],
-                  "buttons": [
-                    {
-                      "text": times[1],
-                      "postback": "PAYLOAD EXAMPLE"
-                    }
-                  ]
-                },{
-                  "title": "Sentri vehícular: ",
-                  "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
-                  "imageUrl": imgUrls[2],
-                  "buttons": [
-                    {
-                      "text": times[2],
-                      "postback": "PAYLOAD EXAMPLE"
-                    }
-                  ]
-                }];
-                // Envia carrousel
-                return await handleCardMessages(elements, sender)
+              .then(res => {
+                // Registra un nuevo usuario o aumenta contador webscrapping
+                return userController.signupFB(sender);
               })
-              .then(carrouselRes => {
-                // Delete images after sending the carrousel
-                for (var i = 0; i < urlsToDelete.length; i++) {
-                  // Change indexOf to '.com/' + 5 when deploying     '.io/' + 4 when dev
-                  var deleteUrl = urlsToDelete[i].substring(urlsToDelete[i].indexOf(".com/") + 5)
-                  fs.unlink('public/' + deleteUrl, (err) => {
-                    if (err) throw err;
-                    console.log('public/' + deleteUrl + ' was deleted');
-                  });
+              .then(async userInfo => {
+                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+                  // Enviar AD si son multiplos de 3 y es diferente de 0
+                  await AD_Abogados(sender);
                 }
-
-                // Send AD
-                var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
-                var replies = [{
-                    "content_type": "text",
-                    "title": "Quiero ayuda legal",
-                    "payload": "asesoria.legal",
-                },
-                {
-                    "content_type": "text",
-                    "title": "No, gracias",
-                    "payload": "no_gracias",
-                }];
-                sendQuickReply(sender, responseText, replies)
               })
+              // .then(async (res) => {
+              //   if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+              //   if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+              //   if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
+                
+              //   times.push(res.standard, res.readylane, res.sentri);
+              //   // Crea las imagenes c/ tiempos de garitas
+              //   return await canvas.generate([res.standard, res.readylane, res.sentri])
+              // })
+              // .then(async (imgUrls) => {
+              //   // Prepara estructura del carrousel
+              //   urlsToDelete = imgUrls;
+              //   var elements = [{
+              //     "title": "Estandar vehícular: ",
+              //     "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
+              //     "imageUrl": imgUrls[0],
+              //     "buttons": [
+              //       {
+              //         "text": times[0],
+              //         "postback": "PAYLOAD EXAMPLE"
+              //       }
+              //     ]
+              //   },{
+              //     "title": "Readylane vehícular: ",
+              //     "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
+              //     "imageUrl": imgUrls[1],
+              //     "buttons": [
+              //       {
+              //         "text": times[1],
+              //         "postback": "PAYLOAD EXAMPLE"
+              //       }
+              //     ]
+              //   },{
+              //     "title": "Sentri vehícular: ",
+              //     "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
+              //     "imageUrl": imgUrls[2],
+              //     "buttons": [
+              //       {
+              //         "text": times[2],
+              //         "postback": "PAYLOAD EXAMPLE"
+              //       }
+              //     ]
+              //   }];
+              //   // Envia carrousel
+              //   return await handleCardMessages(elements, sender)
+              // })
+              // .then(carrouselRes => {
+              //   // Delete images after sending the carrousel
+              //   for (var i = 0; i < urlsToDelete.length; i++) {
+              //     // Change indexOf to '.com/' + 5 when deploying     '.io/' + 4 when dev
+              //     var deleteUrl = urlsToDelete[i].substring(urlsToDelete[i].indexOf(".com/") + 5)
+              //     fs.unlink('public/' + deleteUrl, (err) => {
+              //       if (err) throw err;
+              //       console.log('public/' + deleteUrl + ' was deleted');
+              //     });
+              //   }
+
+              //   // Send AD
+              //   var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
+              //   var replies = [{
+              //       "content_type": "text",
+              //       "title": "Quiero ayuda legal",
+              //       "payload": "asesoria.legal",
+              //   },
+              //   {
+              //       "content_type": "text",
+              //       "title": "No, gracias",
+              //       "payload": "no_gracias",
+              //   }];
+              //   sendQuickReply(sender, responseText, replies)
+              // })
               .catch(err => console.log(err));
           break;
 
