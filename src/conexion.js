@@ -158,7 +158,7 @@ exports.callSendAPI = async (messageData) => {
       gender: '',
       id: ''
     };
-    const url = 'https://graph.facebook.com/' + recipientId + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + FB_PAGE_TOKEN;
+    const url = 'https://graph.facebook.com/' + recipientId + '?fields=id,first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + FB_PAGE_TOKEN;
       await axios.get(url)
         .then(response => {
           if (response.status == 200) {

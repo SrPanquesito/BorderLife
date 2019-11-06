@@ -166,6 +166,38 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
           }).catch();
       break;
 
+      // Pide garita peatonal directamente por:
+      case "input.caminando.sanysidro":
+        crucePeatonal(sender, 'san_ysidro', '', 'San Ysidro');
+      break;
+      case "input.caminando.otay":
+        crucePeatonal(sender, 'otay', 'Passenger', 'Otay');
+      break;
+      case "input.caminando.tecate":
+        crucePeatonal(sender, 'tecate', '', 'Tecate');
+      break;
+      case "input.caminando.calexico.east":
+        crucePeatonal(sender, 'mexicali', 'East', 'Calexico East');
+      break;
+      case "input.caminando.calexico.west":
+        crucePeatonal(sender, 'mexicali', 'West', 'Calexico West');
+      break;
+      case "input.carro.sanysidro":
+        cruceVehicular(sender, 'san_ysidro', '', 'San Ysidro');
+      break;
+      case "input.carro.otay":
+        cruceVehicular(sender, 'otay', 'Passenger', 'Otay');
+      break;
+      case "input.carro.tecate":
+        cruceVehicular(sender, 'tecate', '', 'Tecate');
+      break;
+      case "input.carro.calexico.east":
+        cruceVehicular(sender, 'mexicali', 'East', 'Calexico East');
+      break;
+      case "input.carro.calexico.west":
+        cruceVehicular(sender, 'mexicali', 'West', 'Calexico West');
+      break;
+
       // Envia mensaje generico
       case "send-text":
           var responseText = "This is example of Text message."
@@ -273,103 +305,19 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
 
         // Pedir garitas
         case "san-ysidro-caminando":
-            scrape.cbp('san_ysidro', '', 'peatonal')
-              .then(res => {
-                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-                var responseText = "🛂 *Cruce peatonal por San Ysidro* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-                return conexion.sendTextMessage(sender, responseText);
-              })
-              .then(userInfo => {
-                // Registra un nuevo usuario o aumenta contador webscrapping
-                return userController.signupFB(sender);
-              })
-              .then(async userInfo => {
-                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-                  // Enviar AD si son multiplos de 3 y es diferente de 0
-                  await AD_Abogados(sender);
-                }
-              })
-              .catch(err => console.log(err));
-          break;
+            crucePeatonal(sender, 'san_ysidro', '', 'San Ysidro');
+        break;
         case "otay-caminando":
-            scrape.cbp('otay', 'Passenger', 'peatonal')
-              .then(res => {
-                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-                var responseText = "🛂 *Cruce peatonal por Otay* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-                return conexion.sendTextMessage(sender, responseText);
-              })
-              .then(res => {
-                // Registra un nuevo usuario o aumenta contador webscrapping
-                return userController.signupFB(sender);
-              })
-              .then(async userInfo => {
-                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-                  // Enviar AD si son multiplos de 3 y es diferente de 0
-                  await AD_Abogados(sender);
-                }
-              })
-              .catch(err => console.log(err));
-          break;
+            crucePeatonal(sender, 'otay', 'Passenger', 'Otay');
+        break;
         case "tecate-caminando":
-            scrape.cbp('tecate', '', 'peatonal')
-              .then(res => {
-                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-                var responseText = "🛂 *Cruce peatonal por Tecate* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-                return conexion.sendTextMessage(sender, responseText);
-              })
-              .then(res => {
-                // Registra un nuevo usuario o aumenta contador webscrapping
-                return userController.signupFB(sender);
-              })
-              .then(async userInfo => {
-                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-                  // Enviar AD si son multiplos de 3 y es diferente de 0
-                  await AD_Abogados(sender);
-                }
-              })
-              .catch(err => console.log(err));
-          break;
+            crucePeatonal(sender, 'tecate', '', 'Tecate');
+        break;
         case "calexico-east-caminando":
-            scrape.cbp('mexicali', 'East', 'peatonal')
-              .then(res => {
-                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-                var responseText = "🛂 *Cruce peatonal por Calexico East* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-                return conexion.sendTextMessage(sender, responseText);
-              })
-              .then(res => {
-                // Registra un nuevo usuario o aumenta contador webscrapping
-                return userController.signupFB(sender);
-              })
-              .then(async userInfo => {
-                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-                  // Enviar AD si son multiplos de 3 y es diferente de 0
-                  await AD_Abogados(sender);
-                }
-              })
-              .catch(err => console.log(err));
-          break;
+            crucePeatonal(sender, 'mexicali', 'East', 'Calexico East');
+        break;
         case "calexico-west-caminando":
-            scrape.cbp('mexicali', 'West', 'peatonal')
-              .then(res => {
-                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-                var responseText = "🛂 *Cruce peatonal por Calexico West* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-                return conexion.sendTextMessage(sender, responseText);
-              })
-              .then(res => {
-                // Registra un nuevo usuario o aumenta contador webscrapping
-                return userController.signupFB(sender);
-              })
-              .then(userInfo => {
-                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-                  // Enviar AD si son multiplos de 3 y es diferente de 0
-                  return AD_Abogados(sender);
-                }
-              })
+            crucePeatonal(sender, 'mexicali', 'West', 'Calexico West');
               // .then(res => {
               //   var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
               //   var replies = [{
@@ -384,32 +332,13 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
               //   }];
               //   sendQuickReply(sender, responseText, replies)
               // })
-              .catch(err => console.log(err));
           break;
         
 
         case "san-ysidro-carro":
-            var urlsToDelete = [];
-            var times = [];
-            // Webscrapping info/tiempos de garitas...
-            scrape.cbp('san_ysidro', '', 'carro')
-              .then(res => {
-                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-                if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
-                var responseText = "🛂 *Cruce vehícular por San Ysidro* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-                return conexion.sendTextMessage(sender, responseText);
-              })
-              .then(res => {
-                // Registra un nuevo usuario o aumenta contador webscrapping
-                return userController.signupFB(sender);
-              })
-              .then(async userInfo => {
-                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-                  // Enviar AD si son multiplos de 3 y es diferente de 0
-                  await AD_Abogados(sender);
-                }
-              })
+            // var urlsToDelete = [];
+            // var times = [];
+            cruceVehicular(sender, 'san_ysidro', '', 'San Ysidro');
               // .then(async (res) => {
               //   if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
               //   if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
@@ -481,92 +410,20 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
               //   }];
               //   sendQuickReply(sender, responseText, replies)
               // })
-              .catch(err => console.log(err));
-          break;
+              // .catch(err => console.log(err));
+        break;
 
         case "otay-carro":
-            scrape.cbp('otay', 'Passenger', 'carro')
-              .then(res => {
-                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-                if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
-                var responseText = "🛂 *Cruce vehícular por Otay* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-                return conexion.sendTextMessage(sender, responseText);
-              })
-              .then(res => {
-                // Registra un nuevo usuario o aumenta contador webscrapping
-                return userController.signupFB(sender);
-              })
-              .then(async userInfo => {
-                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-                  // Enviar AD si son multiplos de 3 y es diferente de 0
-                  await AD_Abogados(sender);
-                }
-              })
-              .catch(err => console.log(err));
-          break;
+            cruceVehicular(sender, 'otay', 'Passenger', 'Otay');
+        break;
         case "tecate-carro":
-            scrape.cbp('tecate', '', 'carro')
-              .then(res => {
-                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-                if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
-                var responseText = "🛂 *Cruce vehícular por Tecate* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-                return conexion.sendTextMessage(sender, responseText);
-              })
-              .then(res => {
-                // Registra un nuevo usuario o aumenta contador webscrapping
-                return userController.signupFB(sender);
-              })
-              .then(async userInfo => {
-                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-                  // Enviar AD si son multiplos de 3 y es diferente de 0
-                  await AD_Abogados(sender);
-                }
-              })
-              .catch(err => console.log(err));
+            cruceVehicular(sender, 'tecate', '', 'Tecate');
           break;
         case "calexico-east-carro":
-            scrape.cbp('mexicali', 'East', 'carro')
-              .then(res => {
-                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-                if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
-                var responseText = "🛂 *Cruce vehícular por Calexico East* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-                return conexion.sendTextMessage(sender, responseText);
-              })
-              .then(res => {
-                // Registra un nuevo usuario o aumenta contador webscrapping
-                return userController.signupFB(sender);
-              })
-              .then(async userInfo => {
-                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-                  // Enviar AD si son multiplos de 3 y es diferente de 0
-                  await AD_Abogados(sender);
-                }
-              })
-              .catch(err => console.log(err));
+            cruceVehicular(sender, 'mexicali', 'East', 'Calexico East');
           break;
         case "calexico-west-carro":
-            scrape.cbp('mexicali', 'West', 'carro')
-              .then(res => {
-                if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-                if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-                if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
-                var responseText = "🛂 *Cruce vehícular por Calexico West* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-                return conexion.sendTextMessage(sender, responseText);
-              })
-              .then(res => {
-                // Registra un nuevo usuario o aumenta contador webscrapping
-                return userController.signupFB(sender);
-              })
-              .then(async userInfo => {
-                if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-                  // Enviar AD si son multiplos de 3 y es diferente de 0
-                  await AD_Abogados(sender);
-                }
-              })
-              .catch(err => console.log(err));
+            cruceVehicular(sender, 'mexicali', 'West', 'Calexico West');
           break;
       
         default:
@@ -629,6 +486,52 @@ const AD_Abogados = async (sender) => {
     await conexion.sendTextMessage(sender, responseText);
 };
 
+
+
+
+// Pide tiempos de garita
+const crucePeatonal = async (sender, garita, garitaSub, message) => {
+  await scrape.cbp(garita, garitaSub, 'peatonal')
+    .then(res => {
+      if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+      if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+      var responseText = "🛂 *Cruce peatonal por "+ message +"* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
+      return conexion.sendTextMessage(sender, responseText);
+    })
+    .then(userInfo => {
+      // Registra un nuevo usuario o aumenta contador webscrapping
+      return userController.signupFB(sender);
+    })
+    .then(async userInfo => {
+      if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+        // Enviar AD si son multiplos de 3 y es diferente de 0
+        // return AD_Abogados(sender);
+      }
+    })
+    .catch(err => console.log(err));
+};
+
+const cruceVehicular = async (sender, garita, garitaSub, message) => {
+  scrape.cbp(garita, garitaSub, 'carro')
+  .then(res => {
+    if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
+    if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
+    if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
+    var responseText = "🛂 *Cruce vehícular por "+ message +"* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
+    return conexion.sendTextMessage(sender, responseText);
+  })
+  .then(res => {
+    // Registra un nuevo usuario o aumenta contador webscrapping
+    return userController.signupFB(sender);
+  })
+  .then(async userInfo => {
+    if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+      // Enviar AD si son multiplos de 3 y es diferente de 0
+      // return AD_Abogados(sender);
+    }
+  })
+  .catch(err => console.log(err));
+};
 
 
 
