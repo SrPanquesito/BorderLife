@@ -124,48 +124,6 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
           sendQuickReply(sender, responseText, replies)
       break;
 
-      // Asesoria Legal
-      case "input.asesoria.legal":
-          var responseText = "Pues mira, tengo un par de amigos perfectos para ti.\nTe protegerán a capa y espada y estarán contigo durante todo el proceso.🛡️";
-          conexion.sendTextMessage(sender, responseText).then(res => {
-            var elements = [
-              {
-                "title": "Abogados ;) [Nombre de firma]",
-                "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-                "imageUrl": "https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
-                "default_action": {
-                  "type": "web_url",
-                  "url": "https://digitallabagency.com/"
-                },
-                "buttons": [
-                  {
-                    "text":"Click para ver más",
-                    "postback":"https://digitallabagency.com/",
-                    "webview_height_ratio": "tall",
-                    "messenger_extensions": "true"
-                  }
-                ]
-              },{
-                "title": "Abogados [Nombre de firma]",
-                "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-                "imageUrl":"https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
-                "default_action": {
-                  "type": "web_url",
-                  "url": "https://digitallabagency.com/"
-                },
-                "buttons": [
-                  {
-                    "text":"Click para ver más",
-                    "postback":"https://digitallabagency.com/",
-                    "webview_height_ratio": "tall",
-                    "messenger_extensions": "true"
-                  }
-                ]
-              }];
-              handleCardMessages(elements, sender)
-          }).catch();
-      break;
-
       // Pide garita peatonal directamente por:
       case "input.caminando.sanysidro":
         crucePeatonal(sender, 'san_ysidro', '', 'San Ysidro');
@@ -198,55 +156,6 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
         cruceVehicular(sender, 'mexicali', 'West', 'Calexico West');
       break;
 
-      // Envia mensaje generico
-      case "send-text":
-          var responseText = "This is example of Text message."
-          conexion.sendTextMessage(sender, responseText)
-            .then(async res => {
-              var txt = await conexion.getProfileInfo(sender);
-              console.log(txt);
-            })
-            .catch();
-      break;
-      
-      // Enviame imagen
-      case "send-image":
-          canvas.generate(['Cerrado', 'Abierto', 'N/A'])
-            .then(async (imgUrls) => {
-              for (var i = 0; i < imgUrls.length; i++) {
-                await conexion.sendImageMessage(sender, imgUrls[i]);
-                // Delete local generated image
-                var deleteUrl = imgUrls[i].substring(imgUrls[i].indexOf(".io/") + 4)
-                fs.unlink('public/' + deleteUrl, (err) => {
-                  if (err) throw err;
-                  console.log('public/' + deleteUrl + ' was deleted');
-                });
-              }
-              // If we want to upload to FB API
-              //conexion.uploadImage(sender, imgUrls).then().catch();
-            })
-            .catch(err => console.log(err));
-      break;
-
-      // Envia video
-      case "send-media":
-          const messageData = [
-              {
-                  "media_type": "video",
-                  "url": "https://www.facebook.com/JoshHommeWorldwideFans/videos/1579947835628662/",
-                  "buttons": [
-                    {
-                      "type":"web_url",
-                      "url":"https://digitallabagency.com/",
-                      "title":"URL Button",
-                      "webview_height_ratio": "full"
-                    }
-                  ]
-              }
-          ]
-          sendVideoMessage(sender, messageData);
-      break;
-
         default:
           //unhandled action, just send back the text
           conexion.sendTextMessage(sender, responseText);
@@ -257,52 +166,6 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
     else // Then payload has a value
     {
       switch (payload) {
-        case "no_gracias":
-          var responseText = "Bueno... Pero que no se te olvide que estoy aquí para ti. \nPara cualquier cosa si necesitas un amigo robot 🤖, aquí estaré *24/7* \n Siempre contigo, siempre a tu lado, siempre observandoté 🙂";
-          conexion.sendTextMessage(sender, responseText);
-        break;
-        case "asesoria.legal":
-          var responseText = "Pues mira, tengo un par de amigos perfectos para ti.\nTe protegerán a capa y espada y estarán contigo durante todo el proceso.🛡️";
-          conexion.sendTextMessage(sender, responseText).then(res => {
-            var elements = [
-              {
-                "title": "Abogados [Nombre de firma]",
-                "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-                "imageUrl": "https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
-                "default_action": {
-                  "type": "web_url",
-                  "url": "https://digitallabagency.com/"
-                },
-                "buttons": [
-                  {
-                    "text":"Click para ver más",
-                    "postback":"https://digitallabagency.com/",
-                    "webview_height_ratio": "tall",
-                    "messenger_extensions": "true"
-                  }
-                ]
-              },{
-                "title": "Abogados [Nombre de firma]",
-                "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-                "imageUrl":"https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
-                "default_action": {
-                  "type": "web_url",
-                  "url": "https://digitallabagency.com/"
-                },
-                "buttons": [
-                  {
-                    "text":"Click para ver más",
-                    "postback":"https://digitallabagency.com/",
-                    "webview_height_ratio": "tall",
-                    "messenger_extensions": "true"
-                  }
-                ]
-              }];
-              handleCardMessages(elements, sender)
-          }).catch();
-        break;
-
-
         // Pedir garitas
         case "san-ysidro-caminando":
             crucePeatonal(sender, 'san_ysidro', '', 'San Ysidro');
@@ -318,99 +181,11 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
         break;
         case "calexico-west-caminando":
             crucePeatonal(sender, 'mexicali', 'West', 'Calexico West');
-              // .then(res => {
-              //   var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
-              //   var replies = [{
-              //       "content_type": "text",
-              //       "title": "Quiero ayuda legal",
-              //       "payload": "asesoria.legal",
-              //   },
-              //   {
-              //       "content_type": "text",
-              //       "title": "No, gracias",
-              //       "payload": "no_gracias",
-              //   }];
-              //   sendQuickReply(sender, responseText, replies)
-              // })
           break;
         
 
         case "san-ysidro-carro":
-            // var urlsToDelete = [];
-            // var times = [];
             cruceVehicular(sender, 'san_ysidro', '', 'San Ysidro');
-              // .then(async (res) => {
-              //   if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-              //   if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-              //   if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
-                
-              //   times.push(res.standard, res.readylane, res.sentri);
-              //   // Crea las imagenes c/ tiempos de garitas
-              //   return await canvas.generate([res.standard, res.readylane, res.sentri])
-              // })
-              // .then(async (imgUrls) => {
-              //   // Prepara estructura del carrousel
-              //   urlsToDelete = imgUrls;
-              //   var elements = [{
-              //     "title": "Estandar vehícular: ",
-              //     "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
-              //     "imageUrl": imgUrls[0],
-              //     "buttons": [
-              //       {
-              //         "text": times[0],
-              //         "postback": "PAYLOAD EXAMPLE"
-              //       }
-              //     ]
-              //   },{
-              //     "title": "Readylane vehícular: ",
-              //     "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
-              //     "imageUrl": imgUrls[1],
-              //     "buttons": [
-              //       {
-              //         "text": times[1],
-              //         "postback": "PAYLOAD EXAMPLE"
-              //       }
-              //     ]
-              //   },{
-              //     "title": "Sentri vehícular: ",
-              //     "subtitle": 'Info: U.S. Customs and Border Protection https://www.cbp.gov/',
-              //     "imageUrl": imgUrls[2],
-              //     "buttons": [
-              //       {
-              //         "text": times[2],
-              //         "postback": "PAYLOAD EXAMPLE"
-              //       }
-              //     ]
-              //   }];
-              //   // Envia carrousel
-              //   return await handleCardMessages(elements, sender)
-              // })
-              // .then(carrouselRes => {
-              //   // Delete images after sending the carrousel
-              //   for (var i = 0; i < urlsToDelete.length; i++) {
-              //     // Change indexOf to '.com/' + 5 when deploying     '.io/' + 4 when dev
-              //     var deleteUrl = urlsToDelete[i].substring(urlsToDelete[i].indexOf(".com/") + 5)
-              //     fs.unlink('public/' + deleteUrl, (err) => {
-              //       if (err) throw err;
-              //       console.log('public/' + deleteUrl + ' was deleted');
-              //     });
-              //   }
-
-              //   // Send AD
-              //   var responseText = "👨‍⚖️¿Cómo te has portado esta semana, necesitas un abogado para que defienda tus derechos?👩‍⚖️"
-              //   var replies = [{
-              //       "content_type": "text",
-              //       "title": "Quiero ayuda legal",
-              //       "payload": "asesoria.legal",
-              //   },
-              //   {
-              //       "content_type": "text",
-              //       "title": "No, gracias",
-              //       "payload": "no_gracias",
-              //   }];
-              //   sendQuickReply(sender, responseText, replies)
-              // })
-              // .catch(err => console.log(err));
         break;
 
         case "otay-carro":

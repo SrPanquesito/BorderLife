@@ -176,25 +176,7 @@ exports.callSendAPI = async (messageData) => {
     return json;
   };
 
-  // exports.whitelist = async (recipientId) => {
-  //   var json;
-  //   const url = 'https://graph.facebook.com/' + recipientId + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + FB_PAGE_TOKEN;
-  //     await axios.get(url)
-  //       .then(response => {
-  //         if (response.status == 200) {
-  //           if (response.hasOwnProperty('data')) {
-  //             return response.data;
-  //           }
-  //         }
-  //       })
-  //       .then(res => {
-  //         json = res;
-  //       })
-  //       .catch(function (error) {
-  //         json = error;
-  //       });
-  //   return json;
-  // };
+
 
   
     
