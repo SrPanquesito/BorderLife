@@ -170,23 +170,20 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
     {
       switch (payload) {
         case "adInput.si":
-          conexion.sendTextMessage(sender, responseText)
-            .then(() => {
-              var responseText = "¿Vas a cruzar en carro o caminando?"
-              var replies = [
-              {
-                  "content_type": "text",
-                  "title": "Carro",
-                  "payload": "",
-              },
-              {
-                  "content_type": "text",
-                  "title": "Caminando",
-                  "payload": "",
-              }
-              ];
-              sendQuickReply(sender, responseText, replies)
-            });
+          var responseText = "¿Vas a cruzar en carro o caminando?"
+          var replies = [
+            {
+                "content_type": "text",
+                "title": "Carro",
+                "payload": "",
+            },
+            {
+                "content_type": "text",
+                "title": "Caminando",
+                "payload": "",
+            }
+          ];
+          sendQuickReply(sender, responseText, replies)
       break;
 
       case "adInput.no":
