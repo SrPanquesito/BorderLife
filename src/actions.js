@@ -305,7 +305,7 @@ const crucePeatonal = async (sender, garita, garitaSub, message) => {
     .then(async userInfo => {
       if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
         // Enviar AD si son multiplos de 3 y es diferente de 0
-        // return AD_Abogados(sender);
+        return AD_Abogados(sender);
       }
     })
     .catch(err => console.log(err));
@@ -327,7 +327,7 @@ const cruceVehicular = async (sender, garita, garitaSub, message) => {
   .then(async userInfo => {
     if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
       // Enviar AD si son multiplos de 3 y es diferente de 0
-      // return AD_Abogados(sender);
+      return AD_Abogados(sender);
     }
   })
   .catch(err => console.log(err));

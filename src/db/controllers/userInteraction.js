@@ -71,9 +71,9 @@ exports.signupFB = async (sender) => {
                     first_name: userInfo.first_name,
                     last_name: userInfo.last_name,
                     profile_pic: userInfo.profile_pic,
-                    locale: userInfo.locale,
-                    timezone: userInfo.timezone,
-                    gender: userInfo.gender,
+                    // locale: userInfo.locale,
+                    // timezone: userInfo.timezone,
+                    // gender: userInfo.gender,
                     status: 'server'
                 });
                 return await userNew.save();
