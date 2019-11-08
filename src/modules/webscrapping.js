@@ -105,3 +105,101 @@ exports.cbp = async (garita, garitaSub, cruce) => {
           console.log(error);
         });
 }
+
+/*
+    Webscrapper para pagina de garitas: https://pasosfronterizos.com/
+    El parametro 'garita' se indicaran con mexicali_east || west, otay, san_ysidro y tecate
+*/
+exports.pasosfronterizos = async (garita) => {
+    var json = {
+        "standard": {
+            "vehicular": '',
+            "peatonal": ''
+        },
+        "readylane": {
+            "vehicular": '',
+            "peatonal": ''
+        },
+        "sentri": {
+            "vehicular": '',
+            "peatonal": ''
+        }
+    };
+    var i = 0, vehicular, peatonal, waitTime, arr = [];
+    
+    switch (garita) {
+        case 'mexicali_east':
+            garita = 'garitas-mexicali-calexico-east.php';
+        break;
+        case 'mexicali_west':
+            garita = 'garitas-mexicali-centro-calexico-west.php';
+        break;
+        case 'san_ysidro':
+            garita = 'garitas-tijuana-san-ysidro.php';
+        break;
+        case 'tecate':
+            garita = 'garitas-tecate.php';
+        break;
+        case 'otay':
+            garita = 'garitas-otay-tijuana.php';
+        break;
+    
+        default:
+            break;
+    }
+    
+    const url = 'https://pasosfronterizos.com/' + garita;
+
+    return await axios.get(url)
+        .then(html => {
+        //success!
+        const $ = cheerio.load(html.data);
+
+        var x = $('.price').html();
+
+            $('.price').each((c, el) => {
+                
+                if($(el).children('.header').text().includes('Cotizaciones')) {}
+                else {
+                    vehicular = $(el).children('.header').next().next();
+                    peatonal = $(el).children('.header').next().next().next();
+
+                    // Si hay texto en el span que contiene los tiempos de espera
+                    waitTime = $(vehicular).children('span');
+                    if ( /\S/.test((waitTime).text()) ) {
+                        //console.log($(waitTime).next().next().text() );
+                        arr[i] = $(waitTime).next().next().text();
+                    } else {
+                        arr[i] = 'N/A';
+                    }
+                    i++;
+                    waitTime = $(peatonal).children('span');
+                    if ( /\S/.test((waitTime).text()) ) {
+                        //console.log($(waitTime).next().next().text() );
+                        if (/\S/.test($(waitTime).next().next().text())) {
+                            arr[i] = $(waitTime).next().next().text();
+                        } else {
+                            arr[i] = 'Sin demoras';
+                        }
+                        
+                    } else {
+                        arr[i] = 'N/A';
+                    }
+                    i++;
+                }
+            })
+
+            json.standard.vehicular = arr[0];
+            json.standard.peatonal = arr[1];
+            json.readylane.vehicular = arr[2];
+            json.readylane.peatonal = arr[3];
+            json.sentri.vehicular = arr[4];
+            json.sentri.peatonal = arr[5];
+
+            return json;
+
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
