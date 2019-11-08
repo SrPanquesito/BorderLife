@@ -68,32 +68,6 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
             });
       break;
 
-      case "adInput.si":
-          conexion.sendTextMessage(sender, responseText)
-            .then(() => {
-              var responseText = "¿Vas a cruzar en carro o caminando?"
-              var replies = [
-              {
-                  "content_type": "text",
-                  "title": "Carro",
-                  "payload": "",
-              },
-              {
-                  "content_type": "text",
-                  "title": "Caminando",
-                  "payload": "",
-              }
-              ];
-              sendQuickReply(sender, responseText, replies)
-            });
-      break;
-
-      case "adInput.no":
-          var responseText = "Ah, ok. Bye.";
-          conexion.sendTextMessage(sender, responseText);
-      break;
-
-
       case "input.caminando":
           var responseText = "¿Por donde quieres cruzar caminando?";
           var replies = [
@@ -195,6 +169,30 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
     else // Then payload has a value
     {
       switch (payload) {
+        case "adInput.si":
+          conexion.sendTextMessage(sender, responseText)
+            .then(() => {
+              var responseText = "¿Vas a cruzar en carro o caminando?"
+              var replies = [
+              {
+                  "content_type": "text",
+                  "title": "Carro",
+                  "payload": "",
+              },
+              {
+                  "content_type": "text",
+                  "title": "Caminando",
+                  "payload": "",
+              }
+              ];
+              sendQuickReply(sender, responseText, replies)
+            });
+      break;
+
+      case "adInput.no":
+          var responseText = "Ah, ok. Bye.";
+          conexion.sendTextMessage(sender, responseText);
+      break;
 
         // Pedir garitas
         case "san-ysidro-caminando":
