@@ -15,7 +15,10 @@ exports.cbp = async (garita, garitaSub, cruce) => {
     };
 
     switch (garita) {
-        case 'mexicali':
+        case 'mexicali_east':
+            garita = '2503';
+        break;
+        case 'mexicali_west':
             garita = '2503';
         break;
         case 'san_ysidro':
@@ -168,7 +171,11 @@ exports.pasosfronterizos = async (garita) => {
                     waitTime = $(vehicular).children('span');
                     if ( /\S/.test((waitTime).text()) ) {
                         //console.log($(waitTime).next().next().text() );
-                        arr[i] = $(waitTime).next().next().text();
+                        if(/\S/.test($(waitTime).next().next().next().text()) ) {
+                            arr[i] = $(waitTime).next().next().text()+':'+$(waitTime).next().next().next().text();
+                        } else {
+                            arr[i] = $(waitTime).next().next().text();
+                        }
                     } else {
                         arr[i] = 'N/A';
                     }
@@ -191,13 +198,80 @@ exports.pasosfronterizos = async (garita) => {
 
             json.standard.vehicular = arr[0];
             json.standard.peatonal = arr[1];
-            json.readylane.vehicular = arr[2];
-            json.readylane.peatonal = arr[3];
-            json.sentri.vehicular = arr[4];
-            json.sentri.peatonal = arr[5];
+            json.sentri.vehicular = arr[2];
+            json.sentri.peatonal = arr[3];
+            json.readylane.vehicular = arr[4];
+            json.readylane.peatonal = arr[5];
 
             return json;
 
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+
+/*
+    Webscrapper para pagina de garitas: https://garitasreporte.com/
+    El parametro 'garita' se indicaran con mexicali_east || west, otay, san_ysidro y tecate
+*/
+exports.garitasreporte = async (garita) => {
+    var sub;
+    var json = {
+        "standard": {
+            "vehicular": '',
+            "peatonal": ''
+        },
+        "readylane": {
+            "vehicular": ''
+        },
+        "sentri": {
+            "vehicular": ''
+        }
+    };
+    switch (garita) {
+        case 'mexicali_east':
+            sub = 0;
+            garita = 'mexicali-calexico.php';
+        break;
+        case 'mexicali_west':
+            sub = 1;
+            garita = 'mexicali-calexico.php';
+        break;
+        case 'san_ysidro':
+            sub = 0;
+            garita = 'tijuana-san-ysidro-otay.php';
+        break;
+        case 'tecate':
+            sub = 0;
+            garita = 'tecate.php';
+        break;
+        case 'otay':
+            sub = 2;
+            garita = 'tijuana-san-ysidro-otay.php';
+        break;
+    
+        default:
+            break;
+    }
+
+    const url = 'https://garitasreporte.com/garitas/reporte/' + garita;
+
+    return await axios.get(url)
+        .then(html => {
+            //success!
+            const $ = cheerio.load(html.data);
+            $('table > tbody > tr').each((c, el) => {
+                // Retrieve table from page sub-section
+                if(c === sub) {
+                    json.standard.vehicular = $(el).children('.carrilNormalTiempo').text();
+                    json.readylane.vehicular = $(el).children('.carrilReadyLaneTiempo').text();
+                    json.sentri.vehicular = $(el).children('.carrilSentriTiempo').text();
+                    json.standard.peatonal = $(el).children('.peatonalTiempo').text();
+                }
+            });
+            return json;
         })
         .catch(err => {
             console.log(err);

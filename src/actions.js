@@ -5,6 +5,10 @@ const fs = require('fs');
 
 const userController = require('./db/controllers/userInteraction');
 
+function hasNumber(myString) {
+  return /\d/.test(myString);
+}
+
 const isDefined = (obj) => {
     if (typeof obj == "undefined") {
       return false;
@@ -135,16 +139,13 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
         crucePeatonal(sender, 'tecate', '', 'Tecate');
       break;
       case "input.caminando.calexico.east":
-        crucePeatonal(sender, 'mexicali', 'East', 'Calexico East');
+        crucePeatonal(sender, 'mexicali_east', 'East', 'Calexico East');
       break;
       case "input.caminando.calexico.west":
-        crucePeatonal(sender, 'mexicali', 'West', 'Calexico West');
+        crucePeatonal(sender, 'mexicali_west', 'West', 'Calexico West');
       break;
       case "input.carro.sanysidro":
-        //cruceVehicular(sender, 'san_ysidro', '', 'San Ysidro');
-        scrape.pasosfronterizos('san_ysidro')
-          .then(res => console.log(res))
-          .catch(err => console.log(err));
+        cruceVehicular(sender, 'san_ysidro', '', 'San Ysidro');
       break;
       case "input.carro.otay":
         cruceVehicular(sender, 'otay', 'Passenger', 'Otay');
@@ -153,10 +154,10 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
         cruceVehicular(sender, 'tecate', '', 'Tecate');
       break;
       case "input.carro.calexico.east":
-        cruceVehicular(sender, 'mexicali', 'East', 'Calexico East');
+        cruceVehicular(sender, 'mexicali_east', 'East', 'Calexico East');
       break;
       case "input.carro.calexico.west":
-        cruceVehicular(sender, 'mexicali', 'West', 'Calexico West');
+        cruceVehicular(sender, 'mexicali_west', 'West', 'Calexico West');
       break;
 
         default:
@@ -202,10 +203,10 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
             crucePeatonal(sender, 'tecate', '', 'Tecate');
         break;
         case "calexico-east-caminando":
-            crucePeatonal(sender, 'mexicali', 'East', 'Calexico East');
+            crucePeatonal(sender, 'mexicali_east', 'East', 'Calexico East');
         break;
         case "calexico-west-caminando":
-            crucePeatonal(sender, 'mexicali', 'West', 'Calexico West');
+            crucePeatonal(sender, 'mexicali_west', 'West', 'Calexico West');
           break;
         
 
@@ -220,10 +221,10 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
             cruceVehicular(sender, 'tecate', '', 'Tecate');
           break;
         case "calexico-east-carro":
-            cruceVehicular(sender, 'mexicali', 'East', 'Calexico East');
+            cruceVehicular(sender, 'mexicali_east', 'East', 'Calexico East');
           break;
         case "calexico-west-carro":
-            cruceVehicular(sender, 'mexicali', 'West', 'Calexico West');
+            cruceVehicular(sender, 'mexicali_west', 'West', 'Calexico West');
           break;
       
         default:
@@ -290,15 +291,227 @@ const AD_Abogados = async (sender) => {
 
 
 // Pide tiempos de garita
-const crucePeatonal = async (sender, garita, garitaSub, message) => {
+const cruceVehicular = async(sender, garita, garitaSub, message) => {
+  // All json values must be in minutes to make operations
+  var json1, json2, json3;
+  var json = {
+    'standard': '',
+    'readylane': '',
+    'sentri': ''
+  };
+  await scrape.cbp(garita, garitaSub, 'carro')
+    .then(res => {
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.standard)) res.standard = 0;
+      if(!hasNumber(res.readylane)) res.readylane = 0;
+      if(!hasNumber(res.sentri)) res.sentri = 0;
+
+      res.standard = parseInt(res.standard);
+      res.readylane = parseInt(res.readylane);
+      res.sentri = parseInt(res.sentri);
+
+      json1 = res;
+      console.log(res);
+    })
+    .catch(err => console.log(err));
+  await scrape.pasosfronterizos(garita)
+    .then(res => {
+      var hourMinutes;
+
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.standard.vehicular)) { res.standard = 0; }
+      else {
+        // Convert hours to minutes and parse them as integers
+        if(res.standard.vehicular.includes(':')) {
+          hourMinutes = res.standard.vehicular.split(":");
+          hourMinutes[0] = parseInt(hourMinutes[0]);
+          hourMinutes[1] = parseInt(hourMinutes[1]);
+          res.standard = (hourMinutes[0]*60) + hourMinutes[1];
+        } else { res.standard = parseInt(res.standard.vehicular); }
+      }
+
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.readylane.vehicular)) { res.readylane = 0; }
+      else {
+        // Convert hours to minutes and parse them as integers
+        if(res.readylane.vehicular.includes(':')) {
+          hourMinutes = res.readylane.vehicular.split(":");
+          hourMinutes[0] = parseInt(hourMinutes[0]);
+          hourMinutes[1] = parseInt(hourMinutes[1]);
+          res.readylane = (hourMinutes[0]*60) + hourMinutes[1];
+        } else { res.readylane = parseInt(res.readylane.vehicular); }
+      }
+
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.sentri.vehicular)) { res.sentri = 0; }
+      else {
+        // Convert hours to minutes and parse them as integers
+        if(res.sentri.vehicular.includes(':')) {
+          hourMinutes = res.sentri.vehicular.split(":");
+          hourMinutes[0] = parseInt(hourMinutes[0]);
+          hourMinutes[1] = parseInt(hourMinutes[1]);
+          res.sentri = (hourMinutes[0]*60) + hourMinutes[1];
+        } else { res.sentri = parseInt(res.sentri.vehicular); }
+      }
+
+      json2 = res;
+      console.log(res);
+    })
+    .catch(err => console.log(err));
+    await scrape.garitasreporte(garita)
+    .then(res => {
+      var hourMinutes;
+
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.standard.vehicular)) { res.standard = 0; }
+      else {
+        // Convert hours to minutes and parse them as integers
+        if(res.standard.vehicular.includes(':')) {
+          hourMinutes = res.standard.vehicular.split(":");
+          hourMinutes[0] = parseInt(hourMinutes[0]);
+          hourMinutes[1] = parseInt(hourMinutes[1]);
+          res.standard = (hourMinutes[0]*60) + hourMinutes[1];
+        } else { res.standard = parseInt(res.standard.vehicular); }
+      }
+
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.readylane.vehicular)) { res.readylane = 0; }
+      else {
+        // Convert hours to minutes and parse them as integers
+        if(res.readylane.vehicular.includes(':')) {
+          hourMinutes = res.readylane.vehicular.split(":");
+          hourMinutes[0] = parseInt(hourMinutes[0]);
+          hourMinutes[1] = parseInt(hourMinutes[1]);
+          res.readylane = (hourMinutes[0]*60) + hourMinutes[1];
+        } else { res.readylane = parseInt(res.readylane.vehicular); }
+      }
+
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.sentri.vehicular)) { res.sentri = 0; }
+      else {
+        // Convert hours to minutes and parse them as integers
+        if(res.sentri.vehicular.includes(':')) {
+          hourMinutes = res.sentri.vehicular.split(":");
+          hourMinutes[0] = parseInt(hourMinutes[0]);
+          hourMinutes[1] = parseInt(hourMinutes[1]);
+          res.sentri = (hourMinutes[0]*60) + hourMinutes[1];
+        } else { res.sentri = parseInt(res.sentri.vehicular); }
+      }
+
+      json3 = res;
+      console.log(res);
+    })
+    .catch(err => console.log(err));
+
+  json.standard = Math.round((json1.standard + json2.standard + json3.standard) / 3);
+  json.readylane = Math.round((json1.readylane + json2.readylane + json3.readylane) / 3);
+  json.sentri = Math.round((json1.sentri + json2.sentri + json3.sentri) / 3);
+  
+  printCruce(sender, json, message, 'vehícular');
+};
+
+const crucePeatonal = async(sender, garita, garitaSub, message) => {
+  // All json values must be in minutes to make operations
+  var json1, json2, json3;
+  var json = {
+    'standard': '',
+    'readylane': '',
+    'sentri': ''
+  };
   await scrape.cbp(garita, garitaSub, 'peatonal')
     .then(res => {
-      if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-      if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-      var responseText = "🛂 *Cruce peatonal por "+ message +"* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*";
-      return conexion.sendTextMessage(sender, responseText);
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.standard)) res.standard = 0;
+      if(!hasNumber(res.readylane)) res.readylane = 0;
+      if(!hasNumber(res.sentri)) res.sentri = 0;
+
+      res.standard = parseInt(res.standard);
+      res.readylane = parseInt(res.readylane);
+      res.sentri = parseInt(res.sentri);
+
+      json1 = res;
+      console.log(res);
     })
-    .then(userInfo => {
+    .catch(err => console.log(err));
+  await scrape.pasosfronterizos(garita)
+    .then(res => {
+      var hourMinutes;
+      
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.standard.peatonal)) { res.standard = 0; } 
+      else {
+        // Convert hours to minutes and parse them as integers
+        if(res.standard.peatonal.includes(':')) {
+          hourMinutes = res.standard.peatonal.split(":");
+          hourMinutes[0] = parseInt(hourMinutes[0]);
+          hourMinutes[1] = parseInt(hourMinutes[1]);
+          res.standard = (hourMinutes[0]*60) + hourMinutes[1];
+        } else { res.standard = parseInt(res.standard.peatonal); }
+      }
+
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.readylane.peatonal)) { res.readylane = 0; }
+      else {
+        // Convert hours to minutes and parse them as integers
+        if(res.readylane.peatonal.includes(':')) {
+          hourMinutes = res.readylane.peatonal.split(":");
+          hourMinutes[0] = parseInt(hourMinutes[0]);
+          hourMinutes[1] = parseInt(hourMinutes[1]);
+          res.readylane = (hourMinutes[0]*60) + hourMinutes[1];
+        } else { res.readylane = parseInt(res.readylane.peatonal); }
+      }
+
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.sentri.peatonal)) { res.sentri = 0; }
+      else {
+        // Convert hours to minutes and parse them as integers
+        if(res.sentri.peatonal.includes(':')) {
+          hourMinutes = res.sentri.peatonal.split(":");
+          hourMinutes[0] = parseInt(hourMinutes[0]);
+          hourMinutes[1] = parseInt(hourMinutes[1]);
+          res.sentri = (hourMinutes[0]*60) + hourMinutes[1];
+        } else { res.sentri = parseInt(res.sentri.peatonal); }
+      }
+
+      json2 = res;
+      console.log(res);
+    })
+    .catch(err => console.log(err));
+  await scrape.garitasreporte(garita)
+  .then(res => {
+      var hourMinutes;
+
+      // Change 'no delay' and 'N/A' to number 0 for mathematical operations
+      if(!hasNumber(res.standard.peatonal)) { res.standard = 0; }
+      else {
+        // Convert hours to minutes and parse them as integers
+        if(res.standard.peatonal.includes(':')) {
+          hourMinutes = res.standard.peatonal.split(":");
+          hourMinutes[0] = parseInt(hourMinutes[0]);
+          hourMinutes[1] = parseInt(hourMinutes[1]);
+          res.standard = (hourMinutes[0]*60) + hourMinutes[1];
+        } else { res.standard = parseInt(res.standard.peatonal); }
+      }
+      
+      json3 = res;
+      console.log(res);
+    })
+    .catch(err => console.log(err));
+
+  json.standard = Math.round((json1.standard + json2.standard + json3.standard) / 3);
+  json.readylane = Math.round((json1.readylane + json2.readylane + json3.standard) / 3);
+  json.sentri = Math.round((json1.sentri + json2.sentri + json3.standard) / 3);
+  
+  printCruce(sender, json, message, 'peatonal');
+};
+
+const printCruce = async(sender, json, message, tipo) => {
+  if (json.standard === 0) { json.standard = 'N/A'; } else { json.standard = json.standard + ' min'; }
+  if (json.readylane === 0) { json.readylane = 'N/A'; } else { json.readylane = json.readylane + ' min'; }
+  if (json.sentri === 0) { json.sentri = 'N/A'; } else { json.sentri = json.sentri + ' min'; }
+  var responseText = "🛂 *Cruce " + tipo + " por "+ message +"* 🛃\n\nLinea estandar: *" + json.standard + "*\nReadylane: *" + json.readylane + "*\nSentri: *" + json.sentri + "*";
+  await conexion.sendTextMessage(sender, responseText)
+    .then(res => {
       // Registra un nuevo usuario o aumenta contador webscrapping
       return userController.signupFB(sender);
     })
@@ -310,29 +523,6 @@ const crucePeatonal = async (sender, garita, garitaSub, message) => {
     })
     .catch(err => console.log(err));
 };
-
-const cruceVehicular = async (sender, garita, garitaSub, message) => {
-  scrape.cbp(garita, garitaSub, 'carro')
-  .then(res => {
-    if (res.standard === 'no delay') res.standard = 'SIN DEMORA';
-    if (res.readylane === 'no delay') res.readylane = 'SIN DEMORA';
-    if (res.sentri === 'no delay') res.sentri = 'SIN DEMORA';
-    var responseText = "🛂 *Cruce vehícular por "+ message +"* 🛃\n\nLinea estandar: *" + res.standard + "*\nReadylane: *" + res.readylane + "*\nSentri: *" + res.sentri + "*";
-    return conexion.sendTextMessage(sender, responseText);
-  })
-  .then(res => {
-    // Registra un nuevo usuario o aumenta contador webscrapping
-    return userController.signupFB(sender);
-  })
-  .then(async userInfo => {
-    if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
-      // Enviar AD si son multiplos de 3 y es diferente de 0
-      return AD_Abogados(sender);
-    }
-  })
-  .catch(err => console.log(err));
-};
-
 
 
 
