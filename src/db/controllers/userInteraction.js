@@ -65,7 +65,7 @@ exports.signupFB = async (sender) => {
                 fetchStatus = 'USER CREATED';
                 var userInfo = await conexion.getProfileInfo(sender);
                 console.log(userInfo);
-                const userNew = new User({
+                const userNew = await new User({
                     messenger_id: sender,
                     webscrapping_count: 1,
                     first_name: userInfo.first_name,

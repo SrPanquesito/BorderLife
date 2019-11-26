@@ -19,7 +19,7 @@ const isDefined = (obj) => {
     return obj != null;
   }
 
-exports.handleApiAiAction = (sender, action, responseText, contexts, parameters, payload) => {
+exports.handleApiAiAction = async (sender, action, responseText, contexts, parameters, payload) => {
     
     // ---------------------------------- ACTION FUNCTIONS (Direct dialog) ----------------------------------
     if (payload === "") {
@@ -27,29 +27,31 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
       switch (action) {
     
       case "input.welcome":
-          var imgUrl = "https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/26112397_1995779794024131_2635074728864296031_n.png?_nc_cat=101&_nc_eui2=AeGlk0P1hn-zxVFW8SQ6R9IT1xwXhPQrfX5sb2K8s_Oxlykdga3V0GmkgWB3IzvrniPwStXQcshFa6EuHyWwspuP3JT7Qj3tAo5LEc-FR7abRQ&_nc_oc=AQmsM3PpwZnuoHYc4Se5v-YeEI3CNUF3jjLzS8gUHyd_fGxON6WB7WeG0Cf32JDrJGA&_nc_ht=scontent.ftij3-1.fna&oh=bd83d7cb76fa447c9d3bb99847680558&oe=5E30E1A0";
-          conexion.sendImageMessage(sender, imgUrl)
-            .then(() => {
-              conexion.sendTextMessage(sender, responseText)
-                .then(() => {
-                  var responseText = "¿Vas a cruzar en carro o caminando?"
-                  var replies = [
-                  {
-                      "content_type": "text",
-                      "title": "Carro",
-                      "payload": "",
-                      "image_url": "https://img.icons8.com/plasticine/2x/car.png"
-                  },
-                  {
-                      "content_type": "text",
-                      "title": "Caminando",
-                      "payload": "",
-                      "image_url": "https://cdn3.iconfinder.com/data/icons/diet-flat/64/running-people-man-diet-nutrition-512.png"
-                  }
-                  ];
-                  sendQuickReply(sender, responseText, replies)
-                });
-            });
+          var imgUrl = "https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/p960x960/78082459_145552473517225_5912040294173376512_o.png?_nc_cat=111&_nc_ohc=P2IiJnfoa-UAQkf8JIBT9RQO5v6W1WDucsMzZylgAHQsbJh6eg80Nf25w&_nc_ht=scontent.ftij3-1.fna&oh=5638fbc749fc66a98065ceb620515deb&oe=5E4DA384";
+          await conexion.sendImageMessage(sender, imgUrl);
+          
+          var userInfo = await conexion.getProfileInfo(sender);
+          var responseText = "Hola " + userInfo.first_name + ". Gracias por escribirnos.";
+          await conexion.sendTextMessage(sender, responseText);
+          responseText = "Mi nombre es Don Púas de Border Life y quiero ayudarte hoy para que tu cruce fronterizo sea más sencillo.";
+          await conexion.sendTextMessage(sender, responseText);
+          
+          responseText = "¿Por donde quieres cruzar?"
+          var replies = [
+          {
+              "content_type": "text",
+              "title": "Carro",
+              "payload": "",
+              "image_url": "https://img.icons8.com/plasticine/2x/car.png"
+          },
+          {
+              "content_type": "text",
+              "title": "Caminando",
+              "payload": "",
+              "image_url": "https://cdn3.iconfinder.com/data/icons/diet-flat/64/running-people-man-diet-nutrition-512.png"
+          }
+          ];
+          await sendQuickReply(sender, responseText, replies);
       break;
 
       case "input.cruzar.garita":
@@ -73,7 +75,7 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
       break;
 
       case "input.caminando":
-          var responseText = "¿Por donde quieres cruzar caminando?";
+          var responseText = "¿Por cual garita quieres cruzar caminando?";
           var replies = [
           {
               "content_type": "text",
@@ -101,7 +103,7 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
       break;
 
       case "input.carro":
-          var responseText = "¿Por donde quieres cruzar en carro?";
+          var responseText = "¿Por cual garita quieres cruzar en carro?";
           var replies = [
           {
               "content_type": "text",
@@ -242,40 +244,48 @@ exports.handleApiAiAction = (sender, action, responseText, contexts, parameters,
 
 // -------- ADS --------
 const AD_Abogados = async (sender) => {
-  var responseText = "Si tienes problemas legales tengo un par de amigos perfectos para ti.\nTe protegerán a capa y espada y estarán contigo durante todo el proceso.🛡️";
+  var responseText = "Te recuerdo que si trabajas en Estados Unidos y has tenido recientemente un accidente de auto o trabajo, tal vez has sufrido de un despido injustificado, te podemos ayudar a obtener tus beneficios de manera gratuita.\nContáctalos!";
   await conexion.sendTextMessage(sender, responseText)
     .then(async res => {
       var elements = [
         {
-          "title": "Abogados [Nombre de firma]",
+          "title": "Abogados Now",
           "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-          "imageUrl": "https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
-          "default_action": {
-            "type": "web_url",
-            "url": "https://digitallabagency.com/"
-          },
+          "imageUrl": "https://lh3.googleusercontent.com/ohEQGGTmmJRlfE7nbMKiZzCRjxwcKqB54c6GVZ5jsvdO1Ws4JWeomZkCBOhxYt95ktt7dH4wkqzUIiSXAF45h_TaiAP2l1fMDK7quJ60KBnRRoUVk-JMqXN4hzaNFzYLXKPa2pN2GFxB2UA-kTO306lRvteaDXI24D8w08PFRSL8hqXFiDMGRZC-r4ZTgCZ3fXh40J1E_kOkdQcdsixLo4cL3I5UoLKkXcVOBL4CWs6QfPrfafbMqPf2xvVKpmqiHQT4iOFAl7Kw5LtPQV8AK2FVmMtR2L3m9IJ9sAO-ZjfXZkvQuqyqLF4TXUkP1vlsTlJCCoaIaJs-WfgvbFLgvtatRMCWtsuwzlAGVKYmGkEM3RJVXmEJSm931KlIMHU91aX6Q-nqmsrmMU3rQMpXM9y0fI7TrUNvcce6VlIB23LdWR8YOJDYhZw4v4YFrVN0IsXQ38PSSBKJxysPp3RP3gb6_v87BTqf0n4BFwXEEMHYs3mtRpDoalVM_w3M6Q0Bh1HN_NY6y1esoTPeScksPBnjhfiF25x6m42GbMxYfutHLxDxN8iVRc5YfUByZnb5o_x-wuHBTN2tSxcS0cHUbsEuY6zHGjzGy-8BH9_Z6HQPKrpUCPYajqp3eZVtPbrlK1mzc0gTUf_OW5eIIHomiZ7kWxTlyiRKW4x_EerQyL140zEi8I8jLBE=w1200-h628-no",
           "buttons": [
             {
-              "text":"Click para ver más",
-              "postback":"https://digitallabagency.com/",
-              "webview_height_ratio": "tall",
-              "messenger_extensions": "true"
+              "text":"Messenger",
+              "postback":"https://m.me/275725219861393",
             }
           ]
         },{
-          "title": "Abogados [Nombre de firma]",
+          "title": "Abogados Now",
           "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-          "imageUrl":"https://lh3.googleusercontent.com/otnd6JLGhvZa2O-mMO9M8nT2ZzVcbcO58NWw1U2h-5c25LpLjBVBwNXPoy0xpyTotBLiWRyfCj-jpSEHeTSLpD4XgDWS3LghNnbL967YBnEE8yrMDcyQz8j-1KkZVCxKdFXrhWpubQ=w1091-h571-no",
-          "default_action": {
-            "type": "web_url",
-            "url": "https://digitallabagency.com/"
-          },
+          "imageUrl": "https://lh3.googleusercontent.com/XpDPXlzLIrV6elxe2blc9h2fu5DmLpagEDkDqbBmHCzWgrj1_aaPh7gYxIeECo22KXzhKu7EQhKdWlOR9hvJ075725TPPjiK7oMUKqv98OcgPWjDE60jt5oMnm4rGrJ7WyHCMxuw-dhhe4t2Kxh1o5SNc16Pn-yms2IRPqHkTslXJPQxypL039iUUVs4CaAbjml9uwvYOZirTWfXkIKZahH3bGjEabKuz8o-AVBcWJ23AqCShDUMHHLGSsz--QU5x2Z5LmvARRUPbhMRgj9xwweYC6RYiiQFAd7LHqalLwddSL7tNgUXbER33UWGaVJm4AR8eWil4kCoztZMbIAv74reFfNVrN7vkNiRpHyzBpCfymhTEwzPZxV7aHHsJNDl4eKMo_g9Gwf_aIJsH-HPGx9yJSutLuc1UbpzN6kCd66rBbSAeCm864zXgdUx_F-g_Q1CgL7SHhULVn_EfW33CkwVBQnbHJeTygnir3WCs-vpBbyfKVnfJo7g8p2DOM-tXIiynXfXGAIxgMGaQ09iBmUIBof7goQ2gWhBWPAIA8EVc8-IIjVbntBjxv0enue4zcUTFLezsPs_AC8yoxpTV-5-m1njPZ-O3lh3AaRtbEOUCeyGCNAVPq5rx5lBmHjyQ4kAEs4Y5fvETlWq1gd0DT6-wlQwHU53mmnOm5xf6Uh-UekvH58kszQ=w1200-h628-no",
           "buttons": [
             {
-              "text":"Click para ver más",
-              "postback":"https://digitallabagency.com/",
-              "webview_height_ratio": "tall",
-              "messenger_extensions": "true"
+              "text":"Whatsapp",
+              "postback":"https://wa.me/526645017536",
+            }
+          ]
+        },{
+          "title": "Abogados Now",
+          "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
+          "imageUrl": "https://lh3.googleusercontent.com/An89bRuQmAMpqxrV5WP2n1AekkIjyvJrcA-v2M18aTFIvbWgrMHYt6ac8MHksoDXAQ7PTMWTNPhk2A4kVPUriyWbW8R06Gw0rcIPl5Rw1bdzbNRnblAsSS8YVtZcgY5XQLEYH-NqS9j_sAaVdxeeIKpFUMBaRcaPP8h3HmxjJB7RJECY5201WyMUqO6z89-cgp-d_supf1Nsar17-I-klL34OlSEHZLeJIj39JM830ctRRpyrdq1DSx2530BEAGefnGMJ5j0XLo0w74jo0Mg9ThAtFJ3we54MS0uph9fuphrdnXpkeFz9agJsPOM2S3ZIQ3tYiPWmCftDUcqbGUc3QaY3fVpMheVaWvZvMoXbNa7X6w3nwv8u_-vquu-cAm6KTRDHVa79GCAKuM2Mw9Kl0R3gb6P4N3M6QG8Tn_ECZi1rrWEXYpO6EGO1X3miOTM6EfqS5JF3Rauc-_LB57R5e4PW_igY9YKAISgjB5fwvheT11L9CRAyB_k-ZOhi_dI_T-Y3-WTIqU00oHDDO_xbyiUKVgfwACCKYU5dPxFA5jii26v6ovnCJ7rBLCG0e3HXgoI0IOTRK9QRqJPMv30XwM4ZUHUlrcyUKrw_ufqvxS7A2AXGXCKUS8Pv7GH_KLGAUlxLyhoVcQ_T0WG8naF9XSs6g11OdPTRMIV3I-Rkq6bApDLqAaa6To=w810-h450-no",
+          "buttons": [
+            {
+              "text":"Messenger",
+              "postback":"https://m.me/275725219861393",
+            }
+          ]
+        },{
+          "title": "Abogados Now",
+          "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
+          "imageUrl": "https://lh3.googleusercontent.com/tgjJtm_urKirAZcrVji0ddgrGaSr89SSROlLCFjQobiLXJgRyLNwg6v_lNQZTyCzKpisVpgRyCaZW08skxaVDsdUbUfW7cVD6pqXkkPqsdZ3wiB3_L899wryRUl9etZMVSmW-VoBH3VkuENTfimWzUQ1mNbE5fRlU9LLyNlBlSrAsfwzfxVgNsTlDzwrN57S1MRNwFYZUvLy1IQoHM9iHYibMJASL_lLeF7pr4zpBlJzfDvQXhmqYEz3f6WIKLrJkCkTpKpPNEqgHuOmJeGA0XfPg2oQgs_UxJHkpFHia-TdOsmyWsxLBXkgwpSUgrePO6TKJR4AIeY5smQ93YPiGkionSKv9Ev3_WR0Cny4m85nEhX_vsglfLtdURRyX3c3EflWUibqhKnR1HWbM4jxyLY73fjmtCLWMdvuuJ2r8MxXaVtmi2M34m0eF6e21vZN1-PLShjTqaXHYOpXqm73_sZrwU7xUtT4O3Q9Gv9b3G_2m-X-ceA1Om_8miMTWrEzu_6hewFkfS82uEuDDgDMHl9Ap1BxxgFRumkpEvMch8FlMeZ4lKR1Y6JoVcpf8qo3s_cjT8JAaEpNa9rKpgsceIoakgN6elC7gZdCdrSVeWQ-kP2FuTbrE0eGWb6A4nZccLXVHV6ZJ84GxHGmHpLXZ0k9TQh7WOr1WgXyh-Pu2OV0t0QsdHq15d4=w1343-h757-no",
+          "buttons": [
+            {
+              "text":"Whatsapp",
+              "postback":"https://wa.me/526645017536",
             }
           ]
         }];
@@ -516,6 +526,23 @@ const printCruce = async(sender, json, message, tipo) => {
       return userController.signupFB(sender);
     })
     .then(async userInfo => {
+      if (userInfo.user.webscrapping_count === 1) 
+      {
+        responseText = "Espero que haya podido ayudarte " + userInfo.user.first_name + ".\n\nRecuerda que cuando gustes puedes volver a revisar el tiempo de la línea por Messenger, o si gustas te puedo mandar una notificación por email cuando no haya fila en tu garita favorita.";
+        var replies = [
+          {
+              "content_type": "text",
+              "title": "Guardar garita favorita",
+              "payload": ""
+          },
+          {
+              "content_type": "text",
+              "title": "Lo consulto despues",
+              "payload": ""
+          }
+        ];
+        await sendQuickReply(sender, responseText, replies);
+      }
       if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
         // Enviar AD si son multiplos de 3 y es diferente de 0
         return AD_Abogados(sender);
@@ -586,7 +613,11 @@ const sendImageMessage = async (recipientId, imageUrl) => {
       for (var b = 0; b < message.buttons.length; b++) {
         let isLink = message.buttons[b].postback.substring(0, 4) === "http";
         let button;
-        if (isLink) {
+        /* 
+          Si esta definida la extension, el tamaño del webview y el url como HTTP significa que
+          el boton regresa un Webview
+        */
+        if (isLink && isDefined(message.buttons[b].webview_height_ratio) && isDefined(message.buttons[b].messenger_extensions)) {
           button = {
             type: "web_url",
             title: message.buttons[b].text,
@@ -594,7 +625,17 @@ const sendImageMessage = async (recipientId, imageUrl) => {
             webview_height_ratio: "tall",
             messenger_extensions: "true"
           };
-        } else {
+        }
+        // Boton regresara un link
+        else if (isLink) {
+          button = {
+            type: "web_url",
+            title: message.buttons[b].text,
+            url: message.buttons[b].postback,
+          };
+        }
+        // Boton regresara postback
+        else {
           button = {
             type: "postback",
             title: message.buttons[b].text,
@@ -606,19 +647,38 @@ const sendImageMessage = async (recipientId, imageUrl) => {
 
       let element;
       if (message.default_action) {
-        element = {
-          title: message.title,
-          image_url: message.imageUrl,
-          subtitle: message.subtitle,
-          default_action: {
-            type: "web_url",
-            url: message.default_action.url,
-            webview_height_ratio: "tall",
-            messenger_extensions: "true"
-          },
-          buttons: buttons
-        };
-      } else {
+        // Si esta definido la extension y el tamaño del webview, renderiza un Webview
+        if (isDefined(message.default_action.webview_height_ratio) && isDefined(message.default_action.messenger_extensions)) 
+        {
+          element = {
+            title: message.title,
+            image_url: message.imageUrl,
+            subtitle: message.subtitle,
+            default_action: {
+              type: "web_url",
+              url: message.default_action.url, 
+              webview_height_ratio: "tall",
+              messenger_extensions: "true"
+            },
+            buttons: buttons
+          };
+        }
+        // Si no, entonces es un URL
+        else 
+        {
+          element = {
+            title: message.title,
+            image_url: message.imageUrl,
+            subtitle: message.subtitle,
+            default_action: {
+              type: "web_url",
+              url: message.default_action.url
+            },
+            buttons: buttons
+          };
+        }
+      }
+      else {
         element = {
           title: message.title,
           image_url: message.imageUrl,
