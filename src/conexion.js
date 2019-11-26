@@ -121,32 +121,31 @@ sendToApiAi = (sender, text, payload) => {
    *
    */
 exports.callSendAPI = async (messageData) => {
-  
-    const url = "https://graph.facebook.com/me/messages?access_token=" + FB_PAGE_TOKEN;
-      await axios.post(url, messageData)
-        .then(function (response) {
-          if (response.status == 200) {
-            var recipientId = response.data.recipient_id;
-            var messageId = response.data.message_id;
-            if (messageId) {
-              console.log(
-                "Successfully sent message with id %s to recipient %s",
-                messageId,
-                recipientId
-              );
-            } else {
-              console.log(
-                "Successfully called Send API for recipient %s",
-                recipientId
-              );
-            }
+  const url = "https://graph.facebook.com/me/messages?access_token=" + FB_PAGE_TOKEN;
+    await axios.post(url, messageData)
+      .then(function (response) {
+        if (response.status == 200) {
+          var recipientId = response.data.recipient_id;
+          var messageId = response.data.message_id;
+          if (messageId) {
+            console.log(
+              "Successfully sent message with id %s to recipient %s",
+              messageId,
+              recipientId
+            );
+          } else {
+            console.log(
+              "Successfully called Send API for recipient %s",
+              recipientId
+            );
           }
-        })
-        .catch(function (error) {
-          console.log(error.response.headers);
-        });
-    };
-  
+        }
+      })
+      .catch(function (error) {
+        console.log(error.response.headers);
+      });
+  };
+
   // Get profile information from user id
   exports.getProfileInfo = async (recipientId) => {
     var json = {
