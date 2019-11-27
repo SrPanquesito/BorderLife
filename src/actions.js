@@ -470,7 +470,7 @@ const cruceVehicular = async(sender, garita, garitaSub, message) => {
   json.readylane = Math.round((json1.readylane + json2.readylane + json3.readylane) / 3);
   json.sentri = Math.round((json1.sentri + json2.sentri + json3.sentri) / 3);
   
-  printCruce(sender, json, message, 'vehícular');
+  printCruceTest(sender, json, message, 'vehícular');
 };
 
 const crucePeatonal = async(sender, garita, garitaSub, message) => {
@@ -565,10 +565,79 @@ const crucePeatonal = async(sender, garita, garitaSub, message) => {
   json.readylane = Math.round((json1.readylane + json2.readylane + json3.standard) / 3);
   json.sentri = Math.round((json1.sentri + json2.sentri + json3.standard) / 3);
   
-  printCruce(sender, json, message, 'peatonal');
+  printCruceTest(sender, json, message, 'peatonal');
+};
+
+const printCruceTest = async(sender, json, message, tipo) => {
+  console.log(json.standard + "---" + json.readylane + "---" + json.sentri);
+  var standard = json.standard != 0 ? (Math.ceil((json.standard)/5)*5) : "0";
+  var readylane = json.readylane != 0 ? (Math.ceil((json.readylane)/5)*5) : "0";
+  var sentri = json.sentri != 0 ? (Math.ceil((json.sentri)/5)*5) : "0";
+  var elements = [
+    {
+      "title": "Estandar " + tipo + ": " + message,
+      "subtitle": "El tiempo real de la garita sin manipular es: " + json.standard + " minutos.\nCalculamos el tiempo estimado promediando entre fuentes de informacion distintas.",
+      "imageUrl": "https://cutt.ly/borderLife-mins-" + standard,
+      "buttons": [
+        {
+          "text": "Aprox: " + standard + " mins",
+          "postback":"postbackdefault",
+        }
+      ]
+    },{
+      "title": "Readylane " + tipo + ": " + message,
+      "subtitle": "El tiempo real de la garita sin manipular es: " + json.readylane + " minutos.",
+      "imageUrl": "https://cutt.ly/borderLife-mins-" + readylane,
+      "buttons": [
+        {
+          "text": "Aprox: " + readylane + " mins",
+          "postback":"postbackdefault",
+        }
+      ]
+    },{
+      "title": "Sentri " + tipo + ": " + message,
+      "subtitle": "El tiempo real de la garita sin manipular es: " + json.sentri + " minutos.",
+      "imageUrl": "https://cutt.ly/borderLife-mins-" + sentri,
+      "buttons": [
+        {
+          "text": "Aprox: " + sentri + " mins",
+          "postback":"postbackdefault",
+        }
+      ]
+    }];
+    await handleCardMessages(elements, sender)
+    .then(res => {
+      // Registra un nuevo usuario o aumenta contador webscrapping
+      return userController.signupFB(sender);
+    })
+    .then(async userInfo => {
+      if (userInfo.user.webscrapping_count === 1) 
+      {
+        responseText = "Espero que haya podido ayudarte " + userInfo.user.first_name + ".\n\nRecuerda que cuando gustes puedes volver a revisar el tiempo de la línea por Messenger, o si gustas te puedo mandar una notificación por email cuando no haya fila en tu garita favorita.";
+        var replies = [
+          {
+              "content_type": "text",
+              "title": "Guardar garita favorita",
+              "payload": ""
+          },
+          {
+              "content_type": "text",
+              "title": "Lo consulto despues",
+              "payload": ""
+          }
+        ];
+        await sendQuickReply(sender, responseText, replies);
+      }
+      if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+        // Enviar AD si son multiplos de 3 y es diferente de 0
+        return AD_Abogados(sender);
+      }
+    })
+    .catch(err => console.log(err));
 };
 
 const printCruce = async(sender, json, message, tipo) => {
+  console.log(json.standard + "---" + json.readylane + "---" + json.sentri);
   if (json.standard === 0) { json.standard = 'N/A'; } else { json.standard = json.standard + ' min'; }
   if (json.readylane === 0) { json.readylane = 'N/A'; } else { json.readylane = json.readylane + ' min'; }
   if (json.sentri === 0) { json.sentri = 'N/A'; } else { json.sentri = json.sentri + ' min'; }
