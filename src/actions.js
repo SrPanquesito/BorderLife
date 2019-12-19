@@ -33,7 +33,7 @@ exports.handleApiAiAction = async (sender, action, responseText, contexts, param
           var userInfo = await conexion.getProfileInfo(sender);
           var responseText = "Hola " + userInfo.first_name + ". Gracias por escribirnos.";
           await conexion.sendTextMessage(sender, responseText);
-          responseText = "Mi nombre es Don Púas de Border Life y quiero ayudarte hoy para que tu cruce fronterizo sea más sencillo.";
+          responseText = "Bienvenido a Border Life. Queremos ayudarte para que tu cruce fronterizo sea más sencillo.";
           await conexion.sendTextMessage(sender, responseText);
           
           responseText = "¿Por donde quieres cruzar?"
@@ -179,7 +179,7 @@ exports.handleApiAiAction = async (sender, action, responseText, contexts, param
             var userInfo = await conexion.getProfileInfo(sender);
             var responseText = "Hola " + userInfo.first_name + ". Gracias por escribirnos.";
             await conexion.sendTextMessage(sender, responseText);
-            responseText = "Mi nombre es Don Púas de Border Life y quiero ayudarte hoy para que tu cruce fronterizo sea más sencillo.";
+            responseText = "Bienvenido a Border Life. Queremos ayudarte para que tu cruce fronterizo sea más sencillo.";
             await conexion.sendTextMessage(sender, responseText);
             
             responseText = "¿Por donde quieres cruzar?"
@@ -221,7 +221,7 @@ exports.handleApiAiAction = async (sender, action, responseText, contexts, param
         break;
 
         case "quienesSomos.persistentMenu":
-            var responseText = "Hola! Soy Don Púas de Border Life y estoy para ayudarte a que tu vida en la frontera sea más fácil para ahorrar tiempo y dinero. Por el momento te puedo ayudar con el cruce de garitas. Escribe “Cuanta fila hay” y verás como te doy información.";
+            var responseText = "Hola! Somos Border Life y estamos para ayudarte a que tu vida en la frontera sea más fácil para ahorrar tiempo y dinero. Por el momento te puedo ayudar con el cruce de garitas. Escribe “Cuanta fila hay” y verás como te doy información.";
             await conexion.sendTextMessage(sender, responseText);
         break;
 
@@ -308,7 +308,7 @@ const AD_Abogados = async (sender) => {
           "buttons": [
             {
               "text":"Messenger",
-              "postback":"https://m.me/275725219861393",
+              "postback":"https://digitallab.link/BLAds2",
             }
           ]
         },{
@@ -318,27 +318,7 @@ const AD_Abogados = async (sender) => {
           "buttons": [
             {
               "text":"Whatsapp",
-              "postback":"https://wa.me/526645017536",
-            }
-          ]
-        },{
-          "title": "Abogados Now",
-          "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-          "imageUrl": "https://lh3.googleusercontent.com/An89bRuQmAMpqxrV5WP2n1AekkIjyvJrcA-v2M18aTFIvbWgrMHYt6ac8MHksoDXAQ7PTMWTNPhk2A4kVPUriyWbW8R06Gw0rcIPl5Rw1bdzbNRnblAsSS8YVtZcgY5XQLEYH-NqS9j_sAaVdxeeIKpFUMBaRcaPP8h3HmxjJB7RJECY5201WyMUqO6z89-cgp-d_supf1Nsar17-I-klL34OlSEHZLeJIj39JM830ctRRpyrdq1DSx2530BEAGefnGMJ5j0XLo0w74jo0Mg9ThAtFJ3we54MS0uph9fuphrdnXpkeFz9agJsPOM2S3ZIQ3tYiPWmCftDUcqbGUc3QaY3fVpMheVaWvZvMoXbNa7X6w3nwv8u_-vquu-cAm6KTRDHVa79GCAKuM2Mw9Kl0R3gb6P4N3M6QG8Tn_ECZi1rrWEXYpO6EGO1X3miOTM6EfqS5JF3Rauc-_LB57R5e4PW_igY9YKAISgjB5fwvheT11L9CRAyB_k-ZOhi_dI_T-Y3-WTIqU00oHDDO_xbyiUKVgfwACCKYU5dPxFA5jii26v6ovnCJ7rBLCG0e3HXgoI0IOTRK9QRqJPMv30XwM4ZUHUlrcyUKrw_ufqvxS7A2AXGXCKUS8Pv7GH_KLGAUlxLyhoVcQ_T0WG8naF9XSs6g11OdPTRMIV3I-Rkq6bApDLqAaa6To=w810-h450-no",
-          "buttons": [
-            {
-              "text":"Messenger",
-              "postback":"https://m.me/275725219861393",
-            }
-          ]
-        },{
-          "title": "Abogados Now",
-          "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-          "imageUrl": "https://lh3.googleusercontent.com/tgjJtm_urKirAZcrVji0ddgrGaSr89SSROlLCFjQobiLXJgRyLNwg6v_lNQZTyCzKpisVpgRyCaZW08skxaVDsdUbUfW7cVD6pqXkkPqsdZ3wiB3_L899wryRUl9etZMVSmW-VoBH3VkuENTfimWzUQ1mNbE5fRlU9LLyNlBlSrAsfwzfxVgNsTlDzwrN57S1MRNwFYZUvLy1IQoHM9iHYibMJASL_lLeF7pr4zpBlJzfDvQXhmqYEz3f6WIKLrJkCkTpKpPNEqgHuOmJeGA0XfPg2oQgs_UxJHkpFHia-TdOsmyWsxLBXkgwpSUgrePO6TKJR4AIeY5smQ93YPiGkionSKv9Ev3_WR0Cny4m85nEhX_vsglfLtdURRyX3c3EflWUibqhKnR1HWbM4jxyLY73fjmtCLWMdvuuJ2r8MxXaVtmi2M34m0eF6e21vZN1-PLShjTqaXHYOpXqm73_sZrwU7xUtT4O3Q9Gv9b3G_2m-X-ceA1Om_8miMTWrEzu_6hewFkfS82uEuDDgDMHl9Ap1BxxgFRumkpEvMch8FlMeZ4lKR1Y6JoVcpf8qo3s_cjT8JAaEpNa9rKpgsceIoakgN6elC7gZdCdrSVeWQ-kP2FuTbrE0eGWb6A4nZccLXVHV6ZJ84GxHGmHpLXZ0k9TQh7WOr1WgXyh-Pu2OV0t0QsdHq15d4=w1343-h757-no",
-          "buttons": [
-            {
-              "text":"Whatsapp",
-              "postback":"https://wa.me/526645017536",
+              "postback":"https://digitallab.link/BLAds3",
             }
           ]
         }];
@@ -347,6 +327,31 @@ const AD_Abogados = async (sender) => {
     .catch();
 
     var responseText = "http://abogadosnowusa.com/"
+    await conexion.sendTextMessage(sender, responseText);
+};
+
+
+const AD_SeguroAutos = async (sender) => {
+  var responseText = "Te recuerdo que si tu auto tiene placas de California y quieres un seguro con el que ahorres dinero, conoce Borderless, la única aseguranza con cobertura binacional.";
+  await conexion.sendTextMessage(sender, responseText)
+    .then(async res => {
+      var elements = [
+        {
+          "title": "Borderless",
+          "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
+          "imageUrl": "https://lh3.googleusercontent.com/G3EUFofclsemUHFqU1-Y_z6x6pYBMZnMOn2cz6QzkhKT_J9zOt4f9Rc_x4W379PjSlVwxfoL7dRdhQTs0vCQtLj_7V_vaCJzzwXKjNZdCDitMi0Ainier6aH4o-yfiOk8779hjPa5uYzADH0uRcnguMkjWwNst-Q0APOY1l40aS011yoDZgRDwKa8M-s6mKzFCP0Pr1gF6HUTrgwaVJmryvNbKol55s-Mf0BG97uO1C1e6K2ct3i6eRSGU-raNBgrAewFpELoXwWR5tm5nC4X2MyFGy97rM748gxGTXrgzd-EUjtlThPD7vnHwqoz9pG-x6-fshXaVfXZDMYc8Q8Tgc4bdrjvcw13zoNkBBD8e-zdl5RqyIhuVRfU0FhHAEPlhKQ7Dw8svWuelLAwLcPPpsRifOBBorJL1LmNTUYK5F5rwQMrruPNCmrJX8gBevMH-dD61pkQip7kzSKdZ7IC7PAeHoOL1ygs_h-x5Tgtw2zcqJELjU9RyGEXzAg50DqB8PEdYfUhifdfBEVPUrFLiyr0RI3S0sUvPxAP0sPbEnT2Atrhc8aQdYSBDX1S5CozKibAMdv-Hlve_IT_rIMyKrR0PE_LT_yJt6ZW5IoAcSvv9HDYF1fh2wvhWW3yD1OQdMlrcd8zxd3tT2wQ1QQDVN0TQVH9M3tfgwrKA7SyqiOX8tgmMNTYtU=w1200-h628-no",
+          "buttons": [
+            {
+              "text":"Conócelos",
+              "postback":"https://digitallab.link/BLAds1",
+            }
+          ]
+        }];
+        await handleCardMessages(elements, sender)
+    })
+    .catch();
+
+    var responseText = "https://digitallab.link/BLAds1"
     await conexion.sendTextMessage(sender, responseText);
 };
 
@@ -628,7 +633,10 @@ const printCruceTest = async(sender, json, message, tipo) => {
         ];
         await sendQuickReply(sender, responseText, replies);
       }
-      if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
+      if (userInfo.user.webscrapping_count % 6 === 0 && userInfo.user.webscrapping_count !== 0) {
+        return AD_SeguroAutos(sender);
+      }
+      else if (userInfo.user.webscrapping_count % 3 === 0 && userInfo.user.webscrapping_count !== 0) {
         // Enviar AD si son multiplos de 3 y es diferente de 0
         return AD_Abogados(sender);
       }
