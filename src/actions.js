@@ -304,7 +304,7 @@ const AD_Abogados = async (sender) => {
         {
           "title": "Abogados Now",
           "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-          "imageUrl": "https://lh3.googleusercontent.com/ohEQGGTmmJRlfE7nbMKiZzCRjxwcKqB54c6GVZ5jsvdO1Ws4JWeomZkCBOhxYt95ktt7dH4wkqzUIiSXAF45h_TaiAP2l1fMDK7quJ60KBnRRoUVk-JMqXN4hzaNFzYLXKPa2pN2GFxB2UA-kTO306lRvteaDXI24D8w08PFRSL8hqXFiDMGRZC-r4ZTgCZ3fXh40J1E_kOkdQcdsixLo4cL3I5UoLKkXcVOBL4CWs6QfPrfafbMqPf2xvVKpmqiHQT4iOFAl7Kw5LtPQV8AK2FVmMtR2L3m9IJ9sAO-ZjfXZkvQuqyqLF4TXUkP1vlsTlJCCoaIaJs-WfgvbFLgvtatRMCWtsuwzlAGVKYmGkEM3RJVXmEJSm931KlIMHU91aX6Q-nqmsrmMU3rQMpXM9y0fI7TrUNvcce6VlIB23LdWR8YOJDYhZw4v4YFrVN0IsXQ38PSSBKJxysPp3RP3gb6_v87BTqf0n4BFwXEEMHYs3mtRpDoalVM_w3M6Q0Bh1HN_NY6y1esoTPeScksPBnjhfiF25x6m42GbMxYfutHLxDxN8iVRc5YfUByZnb5o_x-wuHBTN2tSxcS0cHUbsEuY6zHGjzGy-8BH9_Z6HQPKrpUCPYajqp3eZVtPbrlK1mzc0gTUf_OW5eIIHomiZ7kWxTlyiRKW4x_EerQyL140zEi8I8jLBE=w1200-h628-no",
+          "imageUrl": "https://live.staticflickr.com/65535/49280804367_9f87c1b912_b.jpg",
           "buttons": [
             {
               "text":"Messenger",
@@ -314,7 +314,7 @@ const AD_Abogados = async (sender) => {
         },{
           "title": "Abogados Now",
           "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-          "imageUrl": "https://lh3.googleusercontent.com/XpDPXlzLIrV6elxe2blc9h2fu5DmLpagEDkDqbBmHCzWgrj1_aaPh7gYxIeECo22KXzhKu7EQhKdWlOR9hvJ075725TPPjiK7oMUKqv98OcgPWjDE60jt5oMnm4rGrJ7WyHCMxuw-dhhe4t2Kxh1o5SNc16Pn-yms2IRPqHkTslXJPQxypL039iUUVs4CaAbjml9uwvYOZirTWfXkIKZahH3bGjEabKuz8o-AVBcWJ23AqCShDUMHHLGSsz--QU5x2Z5LmvARRUPbhMRgj9xwweYC6RYiiQFAd7LHqalLwddSL7tNgUXbER33UWGaVJm4AR8eWil4kCoztZMbIAv74reFfNVrN7vkNiRpHyzBpCfymhTEwzPZxV7aHHsJNDl4eKMo_g9Gwf_aIJsH-HPGx9yJSutLuc1UbpzN6kCd66rBbSAeCm864zXgdUx_F-g_Q1CgL7SHhULVn_EfW33CkwVBQnbHJeTygnir3WCs-vpBbyfKVnfJo7g8p2DOM-tXIiynXfXGAIxgMGaQ09iBmUIBof7goQ2gWhBWPAIA8EVc8-IIjVbntBjxv0enue4zcUTFLezsPs_AC8yoxpTV-5-m1njPZ-O3lh3AaRtbEOUCeyGCNAVPq5rx5lBmHjyQ4kAEs4Y5fvETlWq1gd0DT6-wlQwHU53mmnOm5xf6Uh-UekvH58kszQ=w1200-h628-no",
+          "imageUrl": "https://live.staticflickr.com/65535/49280595786_c78f7a1e8c_b.jpg",
           "buttons": [
             {
               "text":"Whatsapp",
@@ -339,7 +339,7 @@ const AD_SeguroAutos = async (sender) => {
         {
           "title": "Borderless",
           "subtitle": 'https://www.facebook.com/Border-Life-110042407068232/?ref=br_rs',
-          "imageUrl": "https://lh3.googleusercontent.com/G3EUFofclsemUHFqU1-Y_z6x6pYBMZnMOn2cz6QzkhKT_J9zOt4f9Rc_x4W379PjSlVwxfoL7dRdhQTs0vCQtLj_7V_vaCJzzwXKjNZdCDitMi0Ainier6aH4o-yfiOk8779hjPa5uYzADH0uRcnguMkjWwNst-Q0APOY1l40aS011yoDZgRDwKa8M-s6mKzFCP0Pr1gF6HUTrgwaVJmryvNbKol55s-Mf0BG97uO1C1e6K2ct3i6eRSGU-raNBgrAewFpELoXwWR5tm5nC4X2MyFGy97rM748gxGTXrgzd-EUjtlThPD7vnHwqoz9pG-x6-fshXaVfXZDMYc8Q8Tgc4bdrjvcw13zoNkBBD8e-zdl5RqyIhuVRfU0FhHAEPlhKQ7Dw8svWuelLAwLcPPpsRifOBBorJL1LmNTUYK5F5rwQMrruPNCmrJX8gBevMH-dD61pkQip7kzSKdZ7IC7PAeHoOL1ygs_h-x5Tgtw2zcqJELjU9RyGEXzAg50DqB8PEdYfUhifdfBEVPUrFLiyr0RI3S0sUvPxAP0sPbEnT2Atrhc8aQdYSBDX1S5CozKibAMdv-Hlve_IT_rIMyKrR0PE_LT_yJt6ZW5IoAcSvv9HDYF1fh2wvhWW3yD1OQdMlrcd8zxd3tT2wQ1QQDVN0TQVH9M3tfgwrKA7SyqiOX8tgmMNTYtU=w1200-h628-no",
+          "imageUrl": "https://live.staticflickr.com/65535/49284926526_dd49f52944_b.jpg",
           "buttons": [
             {
               "text":"Conócelos",
@@ -582,7 +582,7 @@ const printCruceTest = async(sender, json, message, tipo) => {
     {
       "title": "Estandar " + tipo + ": " + message,
       "subtitle": "El tiempo real de la garita sin manipular es: " + json.standard + " minutos.\nCalculamos el tiempo estimado promediando entre fuentes de informacion distintas.",
-      "imageUrl": "https://cutt.ly/borderLife-mins-" + standard,
+      "imageUrl": "https://cutt.ly/borderLife-minutos-" + standard,
       "buttons": [
         {
           "text": "Aprox: " + standard + " mins",
@@ -592,7 +592,7 @@ const printCruceTest = async(sender, json, message, tipo) => {
     },{
       "title": "Readylane " + tipo + ": " + message,
       "subtitle": "El tiempo real de la garita sin manipular es: " + json.readylane + " minutos.",
-      "imageUrl": "https://cutt.ly/borderLife-mins-" + readylane,
+      "imageUrl": "https://cutt.ly/borderLife-minutos-" + readylane,
       "buttons": [
         {
           "text": "Aprox: " + readylane + " mins",
@@ -602,7 +602,7 @@ const printCruceTest = async(sender, json, message, tipo) => {
     },{
       "title": "Sentri " + tipo + ": " + message,
       "subtitle": "El tiempo real de la garita sin manipular es: " + json.sentri + " minutos.",
-      "imageUrl": "https://cutt.ly/borderLife-mins-" + sentri,
+      "imageUrl": "https://cutt.ly/borderLife-minutos-" + sentri,
       "buttons": [
         {
           "text": "Aprox: " + sentri + " mins",
