@@ -585,8 +585,8 @@ const printCruceTest = async(sender, json, message, tipo) => {
       "imageUrl": "https://cutt.ly/borderLife-minutos-" + standard,
       "buttons": [
         {
-          "text": "Aprox: " + standard + " mins",
-          "postback":"postbackdefault",
+          "text": "Volver a pedir garita",
+          "postback":"cruzarGarita.persistentMenu",
         }
       ]
     },{
@@ -595,8 +595,8 @@ const printCruceTest = async(sender, json, message, tipo) => {
       "imageUrl": "https://cutt.ly/borderLife-minutos-" + readylane,
       "buttons": [
         {
-          "text": "Aprox: " + readylane + " mins",
-          "postback":"postbackdefault",
+          "text": "Volver a pedir garita",
+          "postback":"cruzarGarita.persistentMenu",
         }
       ]
     },{
@@ -605,8 +605,8 @@ const printCruceTest = async(sender, json, message, tipo) => {
       "imageUrl": "https://cutt.ly/borderLife-minutos-" + sentri,
       "buttons": [
         {
-          "text": "Aprox: " + sentri + " mins",
-          "postback":"postbackdefault",
+          "text": "Volver a pedir garita",
+          "postback":"cruzarGarita.persistentMenu",
         }
       ]
     }];
