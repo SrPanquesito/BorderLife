@@ -220,6 +220,11 @@ exports.handleApiAiAction = async (sender, action, responseText, contexts, param
             });
         break;
 
+        case "guardarGarita":
+          var responseText = "Le pido una disculpa, aún no tenemos esa función disponible.\n\n Si quiere volver a consultar una garita, estoy disponible ;)";
+          await conexion.sendTextMessage(sender, responseText);
+        break;
+
         case "quienesSomos.persistentMenu":
             var responseText = "Hola! Somos Border Life y estamos para ayudarte a que tu vida en la frontera sea más fácil para ahorrar tiempo y dinero. Por el momento te puedo ayudar con el cruce de garitas. Escribe “Cuanta fila hay” y verás como te doy información.";
             await conexion.sendTextMessage(sender, responseText);
@@ -622,13 +627,13 @@ const printCruceTest = async(sender, json, message, tipo) => {
         var replies = [
           {
               "content_type": "text",
-              "title": "Guardar garita favorita",
-              "payload": ""
+              "title": "Guardar garita",
+              "payload": "guardarGarita"
           },
           {
               "content_type": "text",
               "title": "Lo consulto despues",
-              "payload": ""
+              "payload": "guardarGarita"
           }
         ];
         await sendQuickReply(sender, responseText, replies);
@@ -662,8 +667,8 @@ const printCruce = async(sender, json, message, tipo) => {
         var replies = [
           {
               "content_type": "text",
-              "title": "Guardar garita favorita",
-              "payload": ""
+              "title": "Guardar garita",
+              "payload": "guardarGarita"
           },
           {
               "content_type": "text",

@@ -192,6 +192,18 @@ exports.callSendAPI = async (messageData) => {
   
   
   
+exports.sendTextMessage = async (recipientId, text) => {
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        text: text
+      }
+    };
+    await this.callSendAPI(messageData);
+  };
+  
   function handleApiAiResponse(sender, response, payload) {
     let responseText = response.result.fulfillment.speech;
     let responseData = response.result.fulfillment.data;
@@ -242,18 +254,6 @@ exports.callSendAPI = async (messageData) => {
     this.callSendAPI(messageData);
   }
   
-  
-exports.sendTextMessage = async (recipientId, text) => {
-    var messageData = {
-      recipient: {
-        id: recipientId
-      },
-      message: {
-        text: text
-      }
-    };
-    await this.callSendAPI(messageData);
-  };
 
 
 
