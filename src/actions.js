@@ -54,33 +54,33 @@ exports.handleApiAiAction = async (sender, action, responseText, contexts, param
           await sendQuickReply(sender, responseText, replies);
       break;
 
-      case "input.getstarted":
-          var imgUrl = "https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/p960x960/78082459_145552473517225_5912040294173376512_o.png?_nc_cat=111&_nc_ohc=P2IiJnfoa-UAQkf8JIBT9RQO5v6W1WDucsMzZylgAHQsbJh6eg80Nf25w&_nc_ht=scontent.ftij3-1.fna&oh=5638fbc749fc66a98065ceb620515deb&oe=5E4DA384";
-          await conexion.sendImageMessage(sender, imgUrl);
-          
-          var userInfo = await conexion.getProfileInfo(sender);
-          var responseText = "Hola " + userInfo.first_name + ". Gracias por escribirnos.";
-          await conexion.sendTextMessage(sender, responseText);
-          responseText = "Bienvenido a Border Life. Queremos ayudarte para que tu cruce fronterizo sea más sencillo.";
-          await conexion.sendTextMessage(sender, responseText);
-          
-          responseText = "¿Por donde quieres cruzar?"
-          var replies = [
-          {
-              "content_type": "text",
-              "title": "Carro",
-              "payload": "",
-              "image_url": "https://img.icons8.com/plasticine/2x/car.png"
-          },
-          {
-              "content_type": "text",
-              "title": "Caminando",
-              "payload": "",
-              "image_url": "https://cdn3.iconfinder.com/data/icons/diet-flat/64/running-people-man-diet-nutrition-512.png"
-          }
-          ];
-          await sendQuickReply(sender, responseText, replies);
-      break;
+      case "welcome.getStarted":
+            var imgUrl = "https://scontent.ftij3-1.fna.fbcdn.net/v/t1.0-9/p960x960/78082459_145552473517225_5912040294173376512_o.png?_nc_cat=111&_nc_ohc=P2IiJnfoa-UAQkf8JIBT9RQO5v6W1WDucsMzZylgAHQsbJh6eg80Nf25w&_nc_ht=scontent.ftij3-1.fna&oh=5638fbc749fc66a98065ceb620515deb&oe=5E4DA384";
+            await conexion.sendImageMessage(sender, imgUrl);
+            
+            var userInfo = await conexion.getProfileInfo(sender);
+            var responseText = "Hola " + userInfo.first_name + ". Gracias por escribirnos.";
+            await conexion.sendTextMessage(sender, responseText);
+            responseText = "Bienvenido a Border Life. Queremos ayudarte para que tu cruce fronterizo sea más sencillo.";
+            await conexion.sendTextMessage(sender, responseText);
+            
+            responseText = "¿Por donde quieres cruzar?"
+            var replies = [
+            {
+                "content_type": "text",
+                "title": "Carro",
+                "payload": "",
+                "image_url": "https://img.icons8.com/plasticine/2x/car.png"
+            },
+            {
+                "content_type": "text",
+                "title": "Caminando",
+                "payload": "",
+                "image_url": "https://cdn3.iconfinder.com/data/icons/diet-flat/64/running-people-man-diet-nutrition-512.png"
+            }
+            ];
+            await sendQuickReply(sender, responseText, replies);
+        break;
 
       case "input.cruzar.garita":
           conexion.sendTextMessage(sender, responseText)
