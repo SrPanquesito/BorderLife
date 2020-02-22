@@ -33,7 +33,7 @@ app.use((req, res, next) => {
   
 // Fetch Routes
 app.get('/', function (req, res) {
-  res.send("Hello world, I am a chat bot");
+  res.send("Hola mundo, I am a chat bot");
 });
 app.get('/webhook', webhook.getMessage);
 app.post('/webhook', webhook.postMessage);
